@@ -66,16 +66,16 @@ public class OptimizeCycle {
         start = System.currentTimeMillis();
 
         // 极限优化版简易写法
-        lable:
+        lab:
         for (int i = 2; i < 100000; i++) {
             for (int j = 2; j <= Math.sqrt(i); j++) {
                 if (i % j == 0) {
                     // 只要当前循环的数能被整除， 跳出循环（是跳出 label对应的循环， 不是当前循环体）
-                    continue lable;
+                    continue lab;
                 }
             }
 
-            // 能走到这步说明是质数
+            // label
             count++;
         }
         System.out.println("质数个数：" + count);
