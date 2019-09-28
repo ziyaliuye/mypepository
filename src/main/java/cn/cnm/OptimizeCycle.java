@@ -6,12 +6,11 @@ package cn.cnm;
  * 质数：也叫素数,只能被1和它本身整除的自然数 例如 3、7
  */
 public class OptimizeCycle {
-    // 开始时间
-    static long start = 0;
-    // 结束时间
-    static long end = 0;
-
     public static void main(String[] args) {
+        // 开始时间
+        long start;
+        // 结束时间
+        long end;
         // 原始版
         int count = 0;
         boolean isFlag = true;
@@ -21,10 +20,11 @@ public class OptimizeCycle {
             for (int j = 2; j < i; j++) {
                 if (i % j == 0) {
                     isFlag = false;
+                    break;
                 }
             }
             // 标识还是true表示该数为质数
-            if (isFlag == true) {
+            if (isFlag) {
                 count++;
             }
 
@@ -51,12 +51,32 @@ public class OptimizeCycle {
                 }
             }
             // 标识还是true表示该数为质数
-            if (isFlag == true) {
+            if (isFlag) {
                 count++;
             }
 
             // 重置标识， 为下一次循环做准备
             isFlag = true;
+        }
+        System.out.println("质数个数：" + count);
+        end = System.currentTimeMillis();
+        System.out.println("执行耗时：" + (end - start));
+
+        count = 0;
+        start = System.currentTimeMillis();
+
+        // 极限优化版简易写法
+        lable:
+        for (int i = 2; i < 100000; i++) {
+            for (int j = 2; j <= Math.sqrt(i); j++) {
+                if (i % j == 0) {
+                    // 只要当前循环的数能被整除， 跳出循环（是跳出 label对应的循环， 不是当前循环体）
+                    continue lable;
+                }
+            }
+
+            // 能走到这步说明是质数
+            count++;
         }
         System.out.println("质数个数：" + count);
         end = System.currentTimeMillis();
