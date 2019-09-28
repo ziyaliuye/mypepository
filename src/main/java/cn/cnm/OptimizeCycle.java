@@ -70,7 +70,7 @@ public class OptimizeCycle {
         for (int i = 2; i < 100000; i++) {
             for (int j = 2; j <= Math.sqrt(i); j++) {
                 if (i % j == 0) {
-                    // 只要当前循环的数能被整除， 跳出循环（是跳出 label对应的循环， 不是当前循环体）
+                    // 只要当前循环的数能被整除， 跳出循环（是跳出 lab对应的循环， 不是当前循环体）
                     continue lab;
                 }
             }
