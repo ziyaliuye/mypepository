@@ -81,5 +81,77 @@ public class ArrayDemo {
             for (int s : sex) {
                 System.out.println(s);
             }
+
+        // 数组的复制
+        int[] array1, array2;
+        array1 = new int[]{1, 2, 3, 4, 5};
+        // 这种复制值只是将array1的引用赋给了array2
+        array2 = array1;
+        for (int i : array2) {
+            System.out.println("array2：" + i);
+        }
+        // 修改array2的值然后查看array1的值
+        array2[0] = 100;
+        for (int i : array1) {
+            System.out.println("array1：" + i);
+        }
+
+        // 完整的数组复制
+        int[] array3 = new int[]{1, 2, 3, 4, 5};
+        int[] array4 = new int[5];
+        for (int x = 0; x < array3.length; x++) {
+            array4[x] = array3[x];
+        }
+        // 修改array4的值然后查看array3的值
+        array4[0] = 100;
+        for (int i : array3) {
+            System.out.println("array3：" + i);
+        }
+        for (int i : array4) {
+            System.out.println("array4：" + i);
+        }
+
+        // 数组反转， 将数组的数据顺序反转
+        int[] array5 = new int[]{1, 2, 3, 4, 5, 6};
+        for (int i = 0; i < array5.length / 2; i++) {
+            int tmp = array5[i];
+            array5[i] = array5[array5.length - i - 1];
+            array5[array5.length - i - 1] = tmp;
+        }
+        for (int i : array5) {
+            System.out.println("array5：" + i);
+        }
+
+        // 数组查询
+        int dest = 2;
+        // 线性查找
+
+        for (int i : array5) {
+            if (i == dest) {
+                System.out.println("线性查找找到了：" + dest + " 索引：" + i);
+            }
+        }
+
+        int[] array6 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        // 二分法查找， 通常来说比线性查找速度要快， 但是前提是数组的数据必须是有序的, 比较时一定要注意顺序
+        // 初始的首索引
+        int head = 0;
+        // 初始末索引
+        int end = array6.length - 1;
+        while (head <= end) {
+            // 将索引折中， 取出折中的值（第二次循环过来再折中）
+            int middle = (head + end) / 2;
+            if (array6[middle] > dest) {
+                // 如果中间的值比查找的值大则查找前半段， 一定要注意大小， 别搞反了
+                end = middle - 1;
+            } else if (array6[middle] < dest) {
+                // 如果中间的值比查找的值大则查找后半段， 一定要注意大小， 别搞反了
+                head = middle + 1;
+            } else {
+                System.out.println("二分法查找找到了：" + array6[middle] + " 索引：" + middle);
+                // 找到后当然就退出循环
+                break;
+            }
+        }
     }
 }
