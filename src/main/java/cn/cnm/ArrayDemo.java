@@ -19,6 +19,11 @@ package cn.cnm;
          ┗━┻━┛   ┗━┻━┛
 */
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author lele
  * @version 1.0
@@ -197,6 +202,14 @@ public class ArrayDemo {
         for (int i : array10) {
             System.out.println("快速排序后array10：" + i);
         }
+
+        // arrays工具类
+        int[] array = new int[]{3, 1, 5, 2, 4, 9, 8, 6, 7};
+        Arrays.sort(array);
+        for (int i : array) {
+            System.out.println("排序后array：" + i);
+        }
+        System.out.println(Arrays.binarySearch(array, 3));
     }
 
     // 快速排序
