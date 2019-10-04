@@ -32,9 +32,6 @@ package cn.cnm;
              ...........赶紧去学习.....................
 */
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author lele
  * @version 1.0
@@ -52,8 +49,5 @@ public class Test {
      * @Date 2019/9/29 22:47
      */
     public static void main(String[] args) {
-        String str1 = "hello";
-        String str2 = "hello";
-        System.out.println(str1 == str2);
     }
 }
