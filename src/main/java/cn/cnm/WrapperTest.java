@@ -25,6 +25,8 @@ package cn.cnm;
         BUG闪开...
 */
 
+import com.sun.java.swing.plaf.windows.WindowsTextAreaUI;
+
 /**
  * @author lele
  * @version 1.0
@@ -74,5 +76,24 @@ public class WrapperTest {
         int in5 = Integer.parseInt(str5);
         // 利用自动装箱， 又将基础数据类型装成包装类， 要知道parseXXX的返回类型是基础数据类型
         Integer in6 = Integer.parseInt(str5);
+
+        // 偏离题
+        System.out.println("无聊的人出的题：");
+        Integer i = new Integer(1);
+        Integer j = new Integer(1);
+        // 这里是纯粹的对象之间的比较， 比较的是地址值
+        System.out.println(i == j);
+
+        Integer m = 1;
+        Integer n = 1;
+        // 装箱时， jdk为了提升效率， 定义了一个int的数组作为缓存， 范围是-128到127， 只要是这个范围的数据就会直接返回对应的int数据
+        // 所以这里最终返回的是一个int而不是包装类， 结果就变成了数值比较， 所以为true
+        System.out.println(m == n);
+
+        Integer x = 128;
+        Integer y = 128;
+        // 超出-128到127的范围后则会返回包装类， 比较是时按对象地址进行比较， 所以结果为 false
+        System.out.println(x == y);
+
     }
 }
