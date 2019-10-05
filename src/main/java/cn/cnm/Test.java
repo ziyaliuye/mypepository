@@ -48,6 +48,7 @@ public class Test {
      * @throws
      * @Date 2019/9/29 22:47
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
     }
 }
