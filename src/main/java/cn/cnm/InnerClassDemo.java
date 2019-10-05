@@ -110,8 +110,9 @@ class InnerClassExample {
 // 创建静态成员内部类 和 非静态成员内部类 的对象
 class InnerClassTest {
     public static void main(String[] args) {
-        // 调用 InnerClassDemo 的静态内部类 InnerStaticPerson 的属性和方法
-        // 语法：外部类名.静态内部类名 变量名 = new 外部类名.静态内部类名();  然后直接使用变量来调用结构
+        // 调用 InnerClassDemo 的静态内部类 InnerStaticPerson 的结构的语法：
+        //      1：外部类名.静态内部类名 变量名 = new 外部类名.静态内部类名();
+        //      2：直接使用 变量 来调用静态内部类的结构
         InnerClassDemo.InnerStaticPerson innerStaticPerson = new InnerClassDemo.InnerStaticPerson();
         System.out.println(innerStaticPerson.FINALSTR);
         // 调用 InnerClassDemo 的非静态内部类 InnerPerson 的属性和方法
