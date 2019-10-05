@@ -81,8 +81,8 @@ public class InnerClassDemo {
 
     // 静态成员内部类
     static class InnerStaticPerson {
-        private String innerStaticstr = "静态成员内部类属性";
-        public static final String FINALSTR = "静态成员内部类常量";
+        public String innerStaticstr = "静态成员内部类属性";
+        public final String FINALSTR = "静态成员内部类常量";
 
         // 静态成员内部类的方法不能调用外部类属性和方法（还没实例化呢）
         private void innerStaticMethod() {
@@ -104,5 +104,23 @@ class InnerClassExample {
         }
         // 返回一个实例
         return new SuperMan();
+    }
+}
+
+// 创建静态成员内部类 和 非静态成员内部类 的对象
+class InnerClassTest {
+    public static void main(String[] args) {
+        // 调用 InnerClassDemo 的静态内部类 InnerStaticPerson 的属性和方法
+        // 语法：外部类名.静态内部类名 变量名 = new 外部类名.静态内部类名();  然后直接使用变量来调用结构
+        InnerClassDemo.InnerStaticPerson innerStaticPerson = new InnerClassDemo.InnerStaticPerson();
+        System.out.println(innerStaticPerson.FINALSTR);
+        // 调用 InnerClassDemo 的非静态内部类 InnerPerson 的属性和方法
+        // 语法
+        //      1：需要先实例化外部类， 赋给一个变量1
+        //      2：外部类名.非静态内部类名 变量2 = 外部类实例.new 非静态内部类名();
+        //      3：通过调用 变量2 来调用非静态内部类的结构
+        InnerClassDemo innerClassDemo = new InnerClassDemo();
+        InnerClassDemo.InnerPerson InnerPerson = innerClassDemo.new InnerPerson();
+        System.out.println(InnerPerson.innerStr);
     }
 }
