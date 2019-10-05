@@ -43,10 +43,31 @@ package cn.cnm;
  */
 public class InterfaceDemo {
     public static void main(String[] args) {
+        // 创建接口的非匿名实现类的非匿名对象
         Flyable flyable = new Aircraft();
         flyable.fly();
         // 可以打印接口中的全局常量
         System.out.println(Flyable.SPEED);
+
+        // 创建了接口的非匿名实现类的匿名对象（就是直接实例化实现类）
+        new Aircraft().fly();
+
+        // 创建接口的匿名实现类的非匿名对象
+        Flyable flyableanonymous = new Flyable() {
+            @Override
+            public void fly() {
+                System.out.println("匿名实现类飞....");
+            }
+        };
+        flyableanonymous.fly();
+
+        // 创建接口的匿名实现类的匿名对象
+        new Flyable() {
+            @Override
+            public void fly() {
+                System.out.println("匿名实现类飞....");
+            }
+        }.fly();
     }
 }
 
