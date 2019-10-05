@@ -68,6 +68,12 @@ public class InterfaceDemo {
                 System.out.println("匿名实现类飞....");
             }
         }.fly();
+
+        // JDK1.8中静态、默认方法的使用
+        NewCharacter newCharacter = new NewCharacterImpl();
+        newCharacter.method2();
+        // 接口的静态方法只能通过接口来调用， 不能通过实现类来调用
+        NewCharacter.Method1();
     }
 }
 
@@ -98,3 +104,21 @@ interface BB {
 interface CC extends AA, BB {
     void a();
 };
+
+// JDK1.8后接口可以定义静态方法、默认方法
+interface NewCharacter {
+    // 定义静态方法
+    public static void Method1() {
+        System.out.println("接口中的静态方法");
+    }
+
+    // 定义默认方法
+    public default void method2() {
+        System.out.println("接口中的默认方法");
+    }
+}
+
+// 实现了结构的类也等同于有了接口中的默认方法, 但是没有静态方法
+class NewCharacterImpl implements NewCharacter{
+
+}
