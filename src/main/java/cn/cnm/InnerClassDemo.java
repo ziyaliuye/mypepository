@@ -35,7 +35,7 @@ package cn.cnm;
  * @date 2019/10/5 15:22
  */
 public class InnerClassDemo {
-    /*
+    /**
      * @author liu_jl
      * @Description 内部类和普通类一样可以正常定义属性和方法， 也可以继承类和实现接口，内部类和外部类可以相互使用属性和方法（不管是不是私有的都可以使用）， 使用方式：
                     外部类直接使用内部类属性和方法：内部类名.this.xxx

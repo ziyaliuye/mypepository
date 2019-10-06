@@ -29,7 +29,7 @@ package cn.cnm;
           ,ssirhSM@&1;i19911i,.             s@@@@@@@@@@@@@@@@@@@@@@@@@@S
              ,,,rHAri1h1rh&@#353Sh:          8@@@@@@@@@@@@@@@@@@@@@@@@@#:
            .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.
-             ...........谢广是sb.....................
+             ...........这特么哪个大神写的代码.....................
 */
 
 /**
@@ -37,18 +37,11 @@ package cn.cnm;
  * @version 1.0
  * @Description
  * @Email 414955507@qq.com
- * @date 2019/10/2 13:36
+ * @date 2019/10/6 16:29
  */
 public class Test {
-    /*
-     * @description 这是程序的入口
-     * @Author lele
-     * @param args : 输入参数
-     * @return void
-     * @throws
-     * @Date 2019/9/29 22:47
-     */
-    public static void main(String[] args) throws Exception {
+
+    public static void main(String[] args) {
 
     }
 }
