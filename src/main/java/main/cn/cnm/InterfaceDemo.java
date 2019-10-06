@@ -1,4 +1,4 @@
-package main.cnm;
+package main.cn.cnm;
 
 /*
                                        ,s555SB@@&
