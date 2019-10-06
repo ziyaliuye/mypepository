@@ -23,8 +23,6 @@ ___`. .' /--.--\ `. . __
 佛曰：bug泛滥，我已瘫痪！
 */
 
-import javax.sound.midi.Soundbank;
-
 /**
  * @author lele
  * @version 1.0
@@ -34,11 +32,17 @@ import javax.sound.midi.Soundbank;
  */
 public class ThreadDemo {
     public static void main(String[] args) {
+        // 打印当前线程名
+        String threadName = Thread.currentThread().getName();
         // 初始化多线程对象
         MyThread myThread = new MyThread();
-        // 调用对象的start()方法开始执行run()方法中的代码
+        // 调用对象的start()方法开始启动一个新的线程并执行run()方法中的代码
         myThread.start();
-        System.out.println("主线程执行了.....");
+        int loopNum = 100;
+        // 需要多线程执行的代码
+        for (int i = 0; i < loopNum; i++) {
+            System.out.println(threadName + "：" + i);
+        }
     }
 }
 
@@ -53,10 +57,12 @@ class MyThread extends Thread {
 
     @Override
     public void run() {
+        // 打印当前线程名
+        String threadName = Thread.currentThread().getName();
         int loopNum = 100;
         // 需要多线程执行的代码
         for (int i = 0; i < loopNum; i++) {
-            System.out.println(i);
+            System.out.println(threadName + "：" + i);
         }
     }
 }
