@@ -2,7 +2,7 @@ package cn.cnm;
 
 /*
 _ooOoo_
-        o8888888o
+o8888888o
 88" . "88
 (| -_- |)
 O\ = /O
@@ -43,6 +43,22 @@ public class ThreadDemo {
         for (int i = 0; i < loopNum; i++) {
             System.out.println(threadName + "：" + i);
         }
+
+        // 创建一个Thread的匿名子类对象然后调用， 节省开发步骤
+        new Thread() {
+            @Override
+            public void run() {
+                // 设置当前线程的优先级
+                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                // 打印当前线程名
+                String threadName = Thread.currentThread().getName();
+                int loopNum = 100;
+                // 需要多线程执行的代码
+                for (int i = 0; i < loopNum; i++) {
+                    System.out.println(threadName + "：" + i);
+                }
+            }
+        }.start();
     }
 }
 
@@ -57,6 +73,8 @@ class MyThread extends Thread {
 
     @Override
     public void run() {
+        // 设置当前线程的优先级
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
         // 打印当前线程名
         String threadName = Thread.currentThread().getName();
         int loopNum = 100;
