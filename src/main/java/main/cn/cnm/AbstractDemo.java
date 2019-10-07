@@ -32,7 +32,7 @@ ___`. .' /--.--\ `. . __
  * @date 2019/10/4 20:56
  */
 public class AbstractDemo {
-    public static void main(String[] args) {
+    public  static void main(String[] args) {
         // 抽象类的匿名子类
         AbstractPerson abstractPerson = new AbstractPerson() {
             @Override

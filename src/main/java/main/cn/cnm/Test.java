@@ -45,3 +45,7 @@ public class Test {
 
     }
 }
+
+class  Test1{
+
+}
