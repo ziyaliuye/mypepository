@@ -21,8 +21,6 @@ package main.cn.cnm;
                        '.:::::'                    ':'````..
 */
 
-import com.sun.org.apache.xpath.internal.functions.FuncTrue;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -36,16 +34,26 @@ import java.util.concurrent.FutureTask;
  * @date 2019/10/7 21:29
  */
 public class ThreadCallableDemo {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
         // 创建一个实现Callable接口的实例
-        NumberCallable numberCallable = new NumberCallable();
+        NumberCallable numberCallable;
+        numberCallable = new NumberCallable();
         // 将实例交给Future接口的实心类FutureTask, 方便获取线程方法的返回值
-        FutureTask futureTask = new FutureTask<>(numberCallable);
+        // 如果不想获取Callable的返回值， 则可以省略这一步， 直接将Callable的实现类对象给Thread
+        // 泛型是返回值的类型
+        FutureTask<Integer> futureTask;
+        futureTask = new FutureTask<Integer>(numberCallable);
         // 创建Thread类准备启动线程, 将Future传入构造器
         Thread thread = new Thread(futureTask);
         thread.start();
         // 通过FutureTask获取返回值, get()返回值， 即为Callable实现类的返回值
-        Object sum = futureTask.get();
+        Integer sum = null;
+        try {
+            sum = futureTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("最终执行结果：" + sum);
 
     }
 }
@@ -53,7 +61,7 @@ public class ThreadCallableDemo {
 // 实现Callable接口并重写call()方法
 class NumberCallable implements Callable {
     @Override
-    public Object call() throws Exception {
+    public Object call() {
         // 随便写点逻辑， 这里是求100以内偶数和
         int sum = 0;
         for (int i = 1; i <= 100; i++) {
