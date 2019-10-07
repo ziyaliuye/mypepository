@@ -28,9 +28,9 @@ class Window implements Runnable {
     // 定义票数
     private int ticket = 100;
 
-    // 定义一个ReentrantLoack对象
+    // 定义一个ReentrantLoack对象， 同样的要注意定义的位置， 如果是继承Thread类实现多线的就需要定义static或者其他处理方式
     // 可以传入空参，fair（公平的）就默认为 false了， 传入true后则表示开启公平原则， 线程先进先出
-    ReentrantLock lock = new ReentrantLock(true);
+    private ReentrantLock lock = new ReentrantLock(true);
 
     @Override
     public void run() {
