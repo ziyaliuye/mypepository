@@ -26,15 +26,35 @@ public class ThreadRunnableDemo {
 class MyRunnable implements Runnable {
     // 总共100张票
     private int ticket = 100;
+    // 随便定义一个对象（修饰符我随便加的， 不是必须）， 这个对象就可以充当锁， 注意定义位置不能定义在同步的代码块中
+    // private static final Object ticket_lock = new Object();
 
     @Override
     public void run() {
         while (true) {
-            if (ticket > 0) {
-                System.out.println("线程：" + Thread.currentThread().getName() + " 卖出票号：" + ticket);
-                ticket--;
-            } else {
-                break;
+            // 同步代码块需要包裹住共享数据所涉及的所有代码, 实现Runnable接口的实现类只有一个， 所以this是唯一的
+            // synchronized (this) {
+            // 可以考虑使用 类对象 来充当锁， 类对象在整个程序运行中只会加载一次
+            synchronized (MyRunnable.class) {
+                if (ticket > 0) {
+                    try {
+                        // 此时休眠 100ms， 可能会出现错票的问题（别的线程将ticket--了）
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("线程：" + Thread.currentThread().getName() + " 卖出票号：" + ticket);
+
+                    try {
+                        // 此时休眠 100ms， 可能会出现重票的问题（别的线程拿到ticket和现在输出是同一个）
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    ticket--;
+                } else {
+                    break;
+                }
             }
         }
     }
