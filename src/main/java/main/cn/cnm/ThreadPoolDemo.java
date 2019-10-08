@@ -66,11 +66,9 @@ class NumberThread implements Runnable {
     @Override
     public void run() {
         // 随便写点逻辑， 这里是求100以内偶数和
-        int sum = 0;
         for (int i = 1; i <= 100; i++) {
             if (i % 2 == 0) {
                 System.out.println(Thread.currentThread().getName() + "：" + i);
-                sum += i;
             }
         }
     }
