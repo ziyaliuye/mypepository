@@ -1,6 +1,8 @@
 package main.cn.cnm;
 
 import javax.sound.midi.Soundbank;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 /**
  * @author lele
@@ -10,7 +12,7 @@ import javax.sound.midi.Soundbank;
  * @date 2019/10/8 16:56
  */
 public class CommonlyUserOnce {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         // 通过 字面量赋值 String对象创建， 数据存储在常量池中
         String str1 = "hello";
         // 本质上 this.value = new char[0];  凡是new出来的对象都是存储在堆空间中
@@ -118,5 +120,34 @@ public class CommonlyUserOnce {
         }
 
 
+        /**
+         * @description String 与 char[] 之间的转换， String底层就是一个 char[]
+         */
+        // String转为char[]
+        char[] charArray = s10.toCharArray();
+        for (char tmp : charArray) {
+            System.out.println(tmp);
+        }
+        // char[]转为String
+        char[] arrayStr = new char[]{'H', 'e', 'l', 'l', 'o',};
+        String s11 = new String(arrayStr);
+        System.out.println(s11);
+
+
+        /**
+         * @description String 与 byte[] 之间的转换
+         */
+        // 字符串转为字节数组， 使用默认字符集进行转换
+        byte[] bytes = s10.getBytes();
+        System.out.println(Arrays.toString(bytes));
+        // 字符串转为字节数组， 使用指定字符集进行转换, 转错编码会出现中文乱码的情况
+        byte[] bytes1 = s10.getBytes("gbk");
+        System.out.println(Arrays.toString(bytes1));
+        // 字节数组转为字符串， 使用默认字符集
+        String s12 = new String(bytes1);
+        System.out.println(s12);
+        // 字节数组转为字符串， 使用默认字符集
+        s12 = new String(bytes1, "gbk");
+        System.out.println(s12);
     }
 }
