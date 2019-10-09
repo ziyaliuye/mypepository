@@ -64,5 +64,21 @@ public class StringBufferBuilderDemo {
         // 替换指定索引的字符， 注意这个方法返回值是void， 不能直接在放在输出语句里
         sb.setCharAt(8, 'b');
         System.out.println(sb);
+
+        /**
+         * @description 关于StringBuffer和StringBuilder的一个小问题， 当出现问题时一定要砍源码
+         */
+        String st = null;
+        StringBuffer sbb = new StringBuffer();
+        // append方法对于null的处理是直接将null当成字符串"null"
+        sbb.append(st);
+        // 相当于sbb里有一个叫"null"的字符串
+        System.out.println(sbb.length());
+        System.out.println(sbb);
+
+        // 调用了StringBuffer的有参构造器， 但是匹配不到类型， 直接报空指针了
+        StringBuffer sbbb = new StringBuffer(st);
+        // 执行不到这里来
+        System.out.println(sbbb);
     }
 }
