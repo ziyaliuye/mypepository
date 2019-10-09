@@ -47,8 +47,22 @@ public class StringBufferBuilderDemo {
         // 在指定索引位置前插入给定字符串
         sb.insert(4, "shabi");
         System.out.println(sb);
-        // 将字符串逆转
+        // 将字符串逆转, 字符串本身的值也就改变了
         sb.reverse();
+        System.out.println(sb);
+        sb.reverse();
+        // 返回指定字符串首次出现的位置（索引）, 没有则返回-1
+        System.out.println(sb.indexOf("xiao"));
+        // 返回字符串长度（实际内容长度）， StringBuffer对象中有一个计数器
+        System.out.println(sb.length());
+        // 返回指定索引位置字符
+        System.out.println(sb.charAt(0));
+        // 从指定索引位置一直到最后， 返回一个新的字符串
+        System.out.println(sb.substring(4));
+        // 从begin索引位置到end索引位置 [begin, end)， 返回一个新的字符串
+        System.out.println(sb.substring(4, 9));
+        // 替换指定索引的字符， 注意这个方法返回值是void， 不能直接在放在输出语句里
+        sb.setCharAt(8, 'b');
         System.out.println(sb);
     }
 }
