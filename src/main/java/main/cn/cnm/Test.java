@@ -6,12 +6,12 @@ import java.util.Date;
 public class Test {
 
     public static void main(String[] args) {
-        String str = "123";
-        System.out.println(str);
-        test(str);
-        System.out.println(str);
-    }
-    public static void test(String str){
-        str = "234";
+        String s1 = "da";
+        String s2 = "shabi";
+        String s3 = "dashabi";
+        String s4 = s1 + "shabi";
+        String s5 = "da" + "shabi";
+        System.out.println(s3 == s4);
+        System.out.println(s3 == s5);
     }
 }
