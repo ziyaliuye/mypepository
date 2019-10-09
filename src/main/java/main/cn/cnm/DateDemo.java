@@ -222,5 +222,19 @@ public class DateDemo {
         // 将日期/时间格式化
         String formateDate2 = dateTimeFormatter1.format(localDateTime);
         System.out.println(formateDate2);
+        // 创建一个格式化的对象， 指定其格式化的格式 localDate 多了一个FULL
+        DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL);
+        String formateDate3 = dateTimeFormatter2.format(LocalDate.now());
+        System.out.println(formateDate3);
+
+        // 自定义相关格式化
+        DateTimeFormatter dateTimeFormatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        // 格式化
+        String patternDate = dateTimeFormatter3.format(localDateTime);
+        System.out.println(patternDate);
+
+        // 解析
+        TemporalAccessor customDate = dateTimeFormatter3.parse("2019-10-09 08:04:41");
+        System.out.println(customDate);
     }
 }
