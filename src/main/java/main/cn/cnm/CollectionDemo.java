@@ -78,7 +78,7 @@ public class CollectionDemo {
 
         // 将集合转为数组， 由于Collection中是可以有多种类型，所以只能转为Object数组
         Object[] array = collection3.toArray();
-        for(Object obj : array){
+        for (Object obj : array) {
             System.out.println(obj);
         }
 
@@ -90,5 +90,40 @@ public class CollectionDemo {
         System.out.println(array1);
 
         /* 集合元素的遍历， iterator方法 返回的是Iterator接口的实例， 通过实例的方法可以遍历集合 */
+        // 获取集合的迭代器, 集合对象每次调用 iterator()方法 都得到一个全新的迭代器对象，默认游标都在集合 的第一个元素之前
+        Iterator iterator = list.iterator();
+        // hasNext() 判断迭代器中是否还有下一个元素（指针不会向下移）， 和next() 搭配使用
+        while (iterator.hasNext()) {
+            // next()  获取迭代器中下一个元素（指针指向下一个元素）， 如果没有元素则会报错
+            System.out.println(iterator.next());
+        }
+
+        // 迭代时删除集合中的数据（是集合本身的数据， 迭代器只是获取了一个可以迭代集合的类， 实际数据还在集合中）
+        // 如果迭代器的指针指向第一个元素之前或者指针指向的元素已经remove()了一次， 那么再调用 remove() 则会报 IllegalStateException 异常
+        Collection lists = new ArrayList();
+        lists.add("AA");
+        lists.add("BB");
+        lists.add("CC");
+        Iterator iterator1 = lists.iterator();
+        while (iterator1.hasNext()) {
+            String tmp = String.valueOf(iterator1.next());
+            if ("BB".equals(tmp)) {
+                iterator1.remove();
+            }
+        }
+        /*  并且注意这个remove()方法不要随便用， 最好用集合本身的remove() 方法
+            如果 ArrayList 是由 Arrays工具类的 asList() 方法产生，调用它的迭代器的 remove方法就会报 java.lang.UnsupportedOperationException 异常
+            因为这个产生 ArrayList不是Java.util.ArrayList, 而是Arrays的内部类（继承 AbstractList后自己写的） */
+        System.out.println(lists);
+
+
+        /*
+         JDK5.0后提供了比 while 循环更方便的遍历方式：foreach （增强 for循环）
+         遍历操作不需要获取 Collection 或 数组 的长度， 无需使用索引访问元素， 遍历集合的底层是调用 Iterator 完成操作
+         */
+        for (Object str : lists) {
+            System.out.println(str);
+        }
+
     }
 }
