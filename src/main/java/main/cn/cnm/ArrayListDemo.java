@@ -21,6 +21,7 @@ package main.cn.cnm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -81,5 +82,15 @@ public class ArrayListDemo {
 
         // 返回从begin到end位置的子集合[begin, end)
         System.out.println(list.subList(0, 3));
+
+        // 遍历ArrayList方式和父接口Collection一样
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+        System.out.println("================");
+        for (Object obj : list) {
+            System.out.println(obj);
+        }
     }
 }
