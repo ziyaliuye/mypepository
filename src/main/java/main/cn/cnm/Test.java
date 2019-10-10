@@ -7,12 +7,12 @@ import java.util.Date;
 public class Test {
 
     public static void main(String[] args) {
-        String s1 = "da";
-        String s2 = "shabi";
-        String s3 = "dashabi";
-        String s4 = s1 + "shabi";
-        String s5 = "da" + "shabi";
-        System.out.println(s3 == s4);
-        System.out.println(s3 == s5);
+        Integer in1 = 1;
+        Integer in2 = 1;
+        System.out.println(in1 == in2);
+
+        Integer in3 = 1000;
+        Integer in4 = 1000;
+        System.out.println(in3 == in4);
     }
 }
