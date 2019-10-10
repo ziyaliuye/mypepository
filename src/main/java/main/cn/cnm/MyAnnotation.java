@@ -39,4 +39,7 @@ public @interface MyAnnotation {
     // Annotation 的成员变量 在 Annotation 定义中以无参数方法的形式来声明
     // 可以设置默认值
     String value() default "hello";
+    /**
+     功能的编写需要通过反射读相应的注解， 然后编写相应的处理, 所以目前这个注解是没有任何用处的
+     */
 }
