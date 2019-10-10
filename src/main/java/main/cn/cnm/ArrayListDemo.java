@@ -19,6 +19,10 @@ package main.cn.cnm;
          ┗━┻━┛   ┗━┻━┛
 */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author lele
  * @version 1.0
@@ -32,6 +36,50 @@ package main.cn.cnm;
  */
 public class ArrayListDemo {
     public static void main(String[] args) {
+        /*
+         关于线程安全问题：Collections 工具类有个 synchronizedList(List<T> list)  可以将ArrayList 转为一个线程安全 List 集合
+         所以一般即使有线程安全问题也不会用Vector集合
+         */
 
+
+        List list = new ArrayList<>();
+        list.add(123);
+        list.add("ABC");
+        list.add(new Person());
+        list.add(true);
+        System.out.println(list);
+        /* ArrayList常用方法 */
+        // 添加元素操作， 默认往最后位置添加
+        list.add("wocao");
+        System.out.println(list);
+        // 指定索引位置添加元素， 添加后后续的元素每个都往后挪
+        list.add(1, "danteng");
+        System.out.println(list);
+        // 将一个集合的内容添加进来， 默认往最后位置添加
+        List list1 = Arrays.asList(1, 2, 3);
+        list.addAll(list1);
+        System.out.println(list);
+        // 指定索引位置将一个集合的内容添加进来， 添加后后续的元素每个都往后挪
+        List list2 = Arrays.asList(3, 2, 1);
+        list.addAll(5, list2);
+        System.out.println(list);
+
+        // 获取指定索引位置元素
+        System.out.println(list.get(1));
+        // 返回元素在集合中首次出现的位置, 没有则返回-1
+        System.out.println(list.indexOf("wocao"));
+        // 返回元素在集合中最后一次出现的位置, 没有则返回-1
+        System.out.println(list.lastIndexOf("wocao"));
+
+        // 移除指定索引位置元素， 并且返回这个元素（删除的元素对象）
+        System.out.println(list.remove(3));
+        // 移除指定内容元素， 并且返回删除结果（boolean类型）
+        System.out.println(list.remove("wocao"));
+
+        // 设置指定索引位置的元素值， 并返回被替换的值（替换前的值）
+        System.out.println(list.set(0, 999));
+
+        // 返回从begin到end位置的子集合[begin, end)
+        System.out.println(list.subList(0, 3));
     }
 }
