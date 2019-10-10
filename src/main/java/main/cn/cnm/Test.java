@@ -3,6 +3,7 @@ package main.cn.cnm;
 import java.util.Calendar;
 import java.util.Date;
 
+@MyAnnotation(value = "hello")
 public class Test {
 
     public static void main(String[] args) {
