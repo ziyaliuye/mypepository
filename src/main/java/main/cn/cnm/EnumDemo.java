@@ -90,13 +90,42 @@ class Season {
     }
 }
 
+// 自定义一个接口
+interface TestInfo {
+    void show();
+}
+
 // 使用enum修饰的枚举类
-enum EnumSeason {
+enum EnumSeason implements TestInfo {
     // 首先就定义返回的对象（比较怪异的要求， 返回的对象必须放最上面）， 多个对象用逗号,隔开
-    SPRING("春天", "交配的好季节..."),
-    SUMMER("夏天", "蒸桑拿的好季节..."),
-    AUTUMN("秋天", "喝西北风的好季节..."),
-    WINTER("冬天", "感冒的好季节...");
+    SPRING("春天", "交配的好季节...") {
+        // 重写对象的方法
+        @Override
+        public void show() {
+            System.out.println("春天啦啦啦");
+        }
+    },
+    SUMMER("夏天", "蒸桑拿的好季节...") {
+        // 重写对象的方法
+        @Override
+        public void show() {
+            System.out.println("夏天啦啦啦");
+        }
+    },
+    AUTUMN("秋天", "喝西北风的好季节...") {
+        // 重写对象的方法
+        @Override
+        public void show() {
+            System.out.println("秋天啦啦啦");
+        }
+    },
+    WINTER("冬天", "感冒的好季节...") {
+        // 重写对象的方法
+        @Override
+        public void show() {
+            System.out.println("冬天啦啦啦");
+        }
+    };
 
     // 声明对象的属性 private final, 直接赋值的方式就是每次拿到枚举类的属性值都一样
     private final String seasonName;
@@ -115,5 +144,11 @@ enum EnumSeason {
 
     public String getSeasonDesc() {
         return seasonDesc;
+    }
+
+    // 重写接口的方法
+    @Override
+    public void show() {
+        System.out.println("啦啦啦");
     }
 }
