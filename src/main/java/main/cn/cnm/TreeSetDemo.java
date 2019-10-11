@@ -40,7 +40,7 @@ public class TreeSetDemo {
         treeSet.add(new Mouse("罗技", 321));
         treeSet.add(new Mouse("闪电侠", 999));
         treeSet.add(new Mouse("超人", 2000));
-        /* 注意这里是以price的大小进行排序的， 从小到大， 那么添加元素时顺序也要是从小到大， 否则数据添加不进来 */
+        /* 注意这里是以price的大小进行排序的， 从小到大， 那么添加元素时顺序也要是从小到大， 如果后面的数据比前面的小或者相等则数据添加不进来 */
         treeSet.add(new Mouse("雷蛇", 200));
         // 输出时就会发现最后一个元素<雷蛇:200>并没有添加进来
         System.out.println(treeSet);
