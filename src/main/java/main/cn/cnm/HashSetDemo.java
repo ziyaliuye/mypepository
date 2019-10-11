@@ -29,12 +29,13 @@ public class HashSetDemo {
         System.out.println(set);
 
         /*
-         *  HashSet存储元素过程（底层：数组 + 链表）：
+         *  JDK1.7 HashSet存储元素过程（底层：数组 + 链表）:
          *      当向HashSet集合中存入一个元素时， HashSet会调用该对象的hashCode()方法来得到该对象的hashCode值， 然后根据hashCode值， 通过某种散列函数决定该对象在HashSet底层数组中的存储位置
          *      如果HashCode()不想等， 那么直接认为是不同的两个元素，添加元素成功， 如果两个元素的hashCode()值相等， 会再继续调用equals方法，
          *      如果equals方法结果为true， 添加失败
          *      如果equals方法结果为false， 那么会保存该元素， 但是该数组的位置已经有元素了，那么会通过链表的方式继续链接
          *      （七上八下）同HashCode不同equals的情况是通过链表的方式存储后进来的元素， JDK7是存储在原来数据的上面，  JDK8则将数据存储在原来数据的下面）
+         *  JDK1.8 直接使用的Map， HashMap的实现方式和这个流程差不多
          */
 
         /* 为什么面试直接问的HashMap()的底层实现， 因为HashSet源码就是直接new的一个HashMap对象 */

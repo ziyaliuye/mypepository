@@ -7,7 +7,7 @@ import java.util.TreeSet;
  * @author lele
  * @version 1.0
  * @Description 可以按照添加的元素指定属性进行排序， 放入 TreeSet 集合的对象必须是同一个类 new 出来的
- * TreeSet底层采用红黑树的存储结构
+ * TreeSet底层采用红黑树的存储结构， 一个元素左右对应两个元素（左小右大）， 所以添加元素时也必须按从小到大的顺序添加， 否则数据添加不进去
  * @Email 414955507@qq.com
  * @date 2019/10/11 15:08
  */
@@ -33,15 +33,16 @@ public class TreeSetDemo {
             }
         };
 
+        /* 涉及对象的排序， 对象需要重写compareTo方法（自然排序） 或者使用初始化TreeSet时传入有参构造器Comparator对象（定制排序）*/
         // 将定时比较器传入有参构造器， 比较时覆盖Mouse对象中原有的compareTo()
         // 注意TreeSet元素必须要同一个类new出来的， 否则报错
         TreeSet treeSet = new TreeSet(comparator);
         treeSet.add(new Mouse("罗技", 321));
         treeSet.add(new Mouse("闪电侠", 999));
         treeSet.add(new Mouse("超人", 2000));
-        treeSet.add(new Mouse("罗技", 3211));
-
-        /* 涉及对象的排序， 对象需要重写compareTo方法（自然排序） 或者使用初始化TreeSet时传入有参构造器Comparator对象（定制排序）*/
+        /* 注意这里是以price的大小进行排序的， 从小到大， 那么添加元素时顺序也要是从小到大， 否则数据添加不进来 */
+        treeSet.add(new Mouse("雷蛇", 200));
+        // 输出时就会发现最后一个元素<雷蛇:200>并没有添加进来
         System.out.println(treeSet);
     }
 }
