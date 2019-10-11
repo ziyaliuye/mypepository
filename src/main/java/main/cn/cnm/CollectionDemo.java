@@ -1,5 +1,6 @@
 package main.cn.cnm;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 /**
@@ -124,6 +125,9 @@ public class CollectionDemo {
         for (Object str : lists) {
             System.out.println(str);
         }
+
+        /* 也可以直接调用集合的forEach()方法， 可以在方法内编写逻辑， ::是jdk8的新特性 */
+        lists.forEach(System.out::println);
 
     }
 }
