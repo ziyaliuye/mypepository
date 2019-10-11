@@ -17,7 +17,7 @@ public class TreeSetDemo {
         treeSet.add(3);
         treeSet.add(2);
         // treeSet.add(new Person());
-        /* 涉及对象的排序， 对象需要重写compareTo方法（自然排序） 或者 使用Collections.sort()时传入Comparator对象（定制排序） */
+        /* 涉及对象的排序， 对象需要重写compareTo方法（自然排序） 或者使用初始化TreeSet时传入有参构造器Comparator对象（定制排序）*/
         // 对象没有重写compareTo()方法则会报错
         System.out.println(treeSet);
     }
