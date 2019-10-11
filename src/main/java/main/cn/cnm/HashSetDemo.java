@@ -40,5 +40,28 @@ public class HashSetDemo {
 
         /* 为什么面试直接问的HashMap()的底层实现， 因为HashSet源码就是直接new的一个HashMap对象 */
 
+        // 面试题
+        HashSet hashSet = new HashSet();
+        Mouse m1 = new Mouse("AA", 1001);
+        Mouse m2 = new Mouse("BB", 1002);
+        hashSet.add(m1);
+        hashSet.add(m2);
+
+        // 修改m1的值
+        m1.setName("CC");
+        // remove重载方法， 根据对象来删除对象， 但是这个时候 m1的属性已经被修改
+        // 对象算出来的HashCode已经不是原来的值，所以删除的一个未知地方的内容（相当于没删除）
+        hashSet.remove(m1);
+        System.out.println("remove之后的集合：" + hashSet);
+
+        // 添加一个元素， 内容和现在集合中的 ["CC", 1001]一样
+        // 但是现有的元素存的位置是根据修改前的内容HashCode算出来， 所以位置这个新的元素能正常存入
+        hashSet.add(new Mouse("CC", 1001));
+        System.out.println("添加新元素之后的集合：" + hashSet);
+
+        // 因为第一次添加的元素["AA", 1001]已经被修改， 所以即使添加新的内容HashCode一样， 但是调用equals对比后还是不一样
+        // 所以这个元素会存到第一次添加的元素的附近（七上八下）
+        hashSet.add(new Mouse("AA", 1001));
+        System.out.println("同HashCode不同equals的验证：" + hashSet);
     }
 }
