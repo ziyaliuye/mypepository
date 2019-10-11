@@ -2,11 +2,9 @@ package main.cn.cnm;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Lombok;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -33,7 +31,7 @@ public class CompareableDemo {
 @AllArgsConstructor // 全参构造
 @NoArgsConstructor // 无参构造
 @Accessors(chain = true)
-        // 链式风格访问
+// 链式风格访问
 class Mouse implements Comparable {
     // 定义名称
     private String name;
