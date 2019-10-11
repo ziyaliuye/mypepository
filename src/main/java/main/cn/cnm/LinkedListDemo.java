@@ -23,6 +23,10 @@ ___`. .' /--.--\ `. . __
 佛曰：bug泛滥，我已瘫痪！
 */
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
 /**
  * @author lele
  * @version 1.0
@@ -42,5 +46,11 @@ public class LinkedListDemo {
          在维护维护第二个元素的Node类型属性，将prev的赋值为第一个元素，last赋值为第二个元素表示是最后一个元素
          后面添加元素依次类推
          */
+        // 除了底层结构和ArrayList不一样， 其他使用方式和方法都差不多
+        LinkedList list = new LinkedList();
+        list.add(1);
+        list.add("dddd");
+        list.add(3);
+        System.out.println(list);
     }
 }

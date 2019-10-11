@@ -77,6 +77,17 @@ public class ArrayListDemo {
         // 移除指定内容元素， 并且返回删除结果（boolean类型）
         System.out.println(list.remove("wocao"));
 
+        /* 注意 remove() 方法是有重载的， 当传入整数是默认按删除索引的方法走 */
+        List lists = new ArrayList();
+        lists.add(1);
+        lists.add(2);
+        lists.add(3);
+        // 这里IDEA已经提示这个方法的形参是索引
+        list.remove(2);
+        // 所以最终的结果就是[1, 2]
+        System.out.println(lists);
+
+
         // 设置指定索引位置的元素值， 并返回被替换的值（替换前的值）
         System.out.println(list.set(0, 999));
 
@@ -92,5 +103,7 @@ public class ArrayListDemo {
         for (Object obj : list) {
             System.out.println(obj);
         }
+
+
     }
 }

@@ -1,18 +1,24 @@
 package main.cn.cnm;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 
 @MyAnnotation(value = "hello")
 public class Test {
 
     public static void main(String[] args) {
-        Integer in1 = 1;
-        Integer in2 = 1;
-        System.out.println(in1 == in2);
+        List list = new ArrayList();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        updatelist(list);
+        System.out.println(list);
+    }
 
-        Integer in3 = 1000;
-        Integer in4 = 1000;
-        System.out.println(in3 == in4);
+    public static void updatelist(List list) {
+        list.remove(2);
     }
 }
