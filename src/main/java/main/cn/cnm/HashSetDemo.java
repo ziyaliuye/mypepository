@@ -37,5 +37,7 @@ public class HashSetDemo {
          *      （七上八下）同HashCode不同equals的情况是通过链表的方式存储后进来的元素， JDK7是存储在原来数据的上面，  JDK8则将数据存储在原来数据的下面）
          */
 
+        /* 为什么面试直接问的HashMap()的底层实现， 因为HashSet源码就是直接new的一个HashMap对象 */
+
     }
 }
