@@ -10,12 +10,9 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
-        List list = new ArrayList();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        updatelist(list);
-        System.out.println(list);
+        Mouse m1 = new Mouse("AA", 1001);
+        Mouse m2 = new Mouse("BB", 1002);
+
     }
 
     public static void updatelist(List list) {
