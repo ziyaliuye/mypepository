@@ -19,10 +19,7 @@ package main.cn.cnm;
          ┗━┻━┛   ┗━┻━┛
 */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @author lele
@@ -79,11 +76,20 @@ public class CollectionsDemo {
 
         // 返回指定集合中指定元素的出现次数
         System.out.println("List中3出现的次数：" + Collections.frequency(list, 3));
-        // 将list1中的内容复制到list中
+        // 将list1中的内容复制到list中， 前提是list的size>=list1的size， 否则抛错
         Collections.copy(list, list1);
+        // Collections.copy(list1, list);  // list1的size比list小， 抛IndexOutOfBoundsException错误
         System.out.println("复制后的List：" + list);
         // 将list中的指定value替换成新的value（根据value的值来决定）
-        Collections.replaceAll(list, 2, 3);
+        Collections.replaceAll(list, 9, 333);
         System.out.println("替换后的List：" + list);
+
+        /*
+         * Collections 类中提供了多个 synchronizedXxx()方法
+         * 这些方法可使将指定集合包装成线程同步的集合，从而可以解决多线程并发访集合时的线程安全问题
+         */
+        // 返回一个由list转成线程安全的List
+        List list2 = Collections.synchronizedList(list);
+        System.out.println(list2);
     }
 }
