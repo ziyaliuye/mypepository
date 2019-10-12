@@ -41,7 +41,7 @@ package main.cn.cnm;
 			...............我都不知道我写了啥------------------------------
 */
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author lele
@@ -72,5 +72,67 @@ public class MapDemo {
          * 一个键值对（Key-Value）够成一个 Entry对象， Entry对象中有两个属性， 属性存的地址分别指向Key和Value
          * 由于Key都是无序、不可重复的， 所以一个Map集合中的Entry也是无序、不可重复的
          */
+
+        /* Map常用方法， 以HashMap为例 */
+        Map map = new HashMap();
+        // 往map集合中添加一个key-value对
+        // key通常使用 String或者其他对象，不建议使用基本数据类型（不符合特性啊， 不是对象没有equals方法）
+        map.put("AA", 123);
+        map.put("BB", 123);
+        // 从底层源码分析， 这里相当于是一个替换操作
+        map.put("AA", 123456);
+        System.out.println(map);
+
+        Map map1 = new HashMap();
+        map1.put("AA", 123);
+        map.put("CC", 567);
+        // 将一个Map集合的所有元素添加进来, 同样的有相同的元素会被替换
+        map.putAll(map1);
+        System.out.println(map);
+
+        // 根据key移除元素
+        map.remove("AA");
+        System.out.println(map);
+
+        // 清空Map集合, 注意依然是清空数据， 集合对象还存在
+        map1.clear();
+        System.out.println(map1);
+
+        // 根据key获取集合中的元素
+        System.out.println(map.get("AA"));
+
+        // 判断集合是否存在指定的key
+        System.out.println(map.containsKey("BB"));
+        // 判断集合是否存在指定的value， 由于value可能重复， 所以只会返回第一个符合条件的元素
+        System.out.println(map.containsValue(567));
+        // 判断集合是否为空集合
+        System.out.println(map.isEmpty());
+        // 判断两个集合是否完全一致, 无关顺序
+        System.out.println(map.equals(map1));
+
+        /*
+         * 元视图操作的方法, 迭代器是针对于List集合来说的, Map并不能使用迭代器
+         * 可以通过调用Map的一个方法返回一个Set， 然后再使用迭代器, 但是注意这个Set集合是一个HashMap中的内部类， 所以最好用Set接口接收变量
+         *      Set keySet -- 返回所有key构成的一个Set集合
+         *      Collection values() -- 返回所有value构成的Collection集合
+         *      Set entrySet() -- 返回所有key-value对构成的Set集合
+         */
+        // 返回所有key构成的一个Set集合
+        Set set = map.keySet();
+        System.out.println("Map返回的Set类：" + set.getClass());
+        set.forEach(System.out::println);
+
+        // 返回所有value构成的Collection集合
+        Collection collection = map.values();
+        collection.forEach(System.out::println);
+
+        // 返回所有key-value对构成的Set集合, 元素类型是Map中的内部接口Entry， 所以使用时格式Map.Entry
+        Set set1 = map.entrySet();
+        set1.forEach(System.out::println);
+        // 从Entry对象中寻找对应的key和value
+        for (Object obj : set1) {
+            Map.Entry entry = (Map.Entry) obj;
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }
 }
