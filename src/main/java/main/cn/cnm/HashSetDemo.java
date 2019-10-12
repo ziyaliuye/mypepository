@@ -36,6 +36,7 @@ public class HashSetDemo {
          *      如果equals方法结果为false， 那么会保存该元素， 但是该数组的位置已经有元素了，那么会通过链表的方式继续链接
          *      （七上八下）同HashCode不同equals的情况是通过链表的方式存储后进来的元素， JDK7是存储在原来数据的上面，  JDK8则将数据存储在原来数据的下面）
          *  JDK1.8 直接使用的Map， HashMap的实现方式和这个流程差不多
+         *      HashSet底层使用的是HashMap对象， 因为Map是key-value形式， 所以实际只用了它的key， 而value是给的一个默认的常量对象（无意义）， 比直接给null会好点（怕空指针异常）
          */
 
         /* 为什么面试直接问的HashMap()的底层实现， 因为HashSet源码就是直接new的一个HashMap对象 */
