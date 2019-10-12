@@ -34,7 +34,7 @@ import java.util.TreeMap;
  */
 public class TreeMapDemo {
     public static void main(String[] args) {
-        TreeMap treeMap = new TreeMap();
+        TreeMap<String, Integer> treeMap = new TreeMap<>();
         treeMap.put("AA", 123);
         treeMap.put("CC", 123);
         // 比先添加的元素小， 可以正常添加进来
