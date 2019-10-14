@@ -79,6 +79,40 @@ public class GenericityDemo {
         // 此时list1和list2的类型并不具有父子关系， 只是并列关系
         // list1 = list2;  错误示例
 
+        List<String> list3 = null;
+        ArrayList<String> list4 = null;
+        // 此时list3和list4的类型具有父子关系，可以赋值
+        list3 = list4;
+
+        /* 泛型中的通配符：? ， 可以兼容其他同类型不同泛型的集合赋值， 但是不能添加除null任何数据， 一般这种通配方法用于遍历不同类型的操作 */
+        List<?> list5 = null;
+        // list5可以兼容不同类型的泛型集合， 类似于其他集合的公共父类：List<?>
+        list5 = list1;
+        list5 = list2;
+        list5 = list3;
+        list5 = list4;
+        // 可以添加null
+        list5.add(null);
+        // 不可以添加除null以外的任何数据
+        // list.add("AAA"); 错误示例
+
+        /* 有限制条件的泛型通配符使用 */
+        // extends可以看成?继承List（?<=List）, 那么?就表示兼容List的本身以及它的子类
+        List<? extends List> list6 = null;
+        // super可以看成List继承?（?>=List）, 那么?就表示兼容List的本身以及它的父类
+        List<? super List> list7 = null;
+        /*
+         * 这里理解有点偏（用面向对象思想来理解）：
+         * List<? extends List>
+         *  说明泛型只能添加List以及List的子类， 所以这个集合只能添加null， 否则报错， 因为根本无法确定集合里会添加哪个子类
+         * List<? super List>
+         *  说明泛型只能添加List以及List的父类， 所以这个集合可以添加List的子类
+         *      因为不管添加List的哪个子类， List都可以直接兼容的
+         **/
+        // List<? extends List> 只允许添加null
+        list6.add(null);
+        // List<? super List> 可以添加List
+        list7.add(new ArrayList());
     }
 }
 
