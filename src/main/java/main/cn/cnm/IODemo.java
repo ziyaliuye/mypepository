@@ -40,6 +40,7 @@ public class IODemo {
          *  IO涉及40多个类， 都是从4个抽象基类派生出来的：
          *   输入流：InputStream（字节流）/ Reader（字符流）
          *   输出刘：OutputStream（字节流）/ Write（字符流）
+         *  派生的子类可以根据名称的"后半段"来区分是字节流（InputStream/OutputStream）还是字符流（Reader/Write）
          */
     }
 }
