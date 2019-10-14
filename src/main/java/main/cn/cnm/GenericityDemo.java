@@ -19,8 +19,6 @@ package main.cn.cnm;
          ┗━┻━┛   ┗━┻━┛
 */
 
-import org.omg.CORBA.Object;
-
 import java.util.*;
 
 /**
@@ -70,11 +68,17 @@ public class GenericityDemo {
         GenericityClass<String> genericityClass = new GenericityClass("wocao");
         genericityClass.test("nimei");
 
-        /*
-         * 其他情况：
-         *      如果子类继承了父类， 父类中指定了泛型， 可以根据实际情况决定是否需要使用泛型（子类可以全部保留、部分保留、自己增加泛型）
-         *      泛型类型不同的引用不能相互赋值， 例如 ArrayList<String>和ArrayList<Integer>的引用就不能相互赋值
-         */
+        /* 泛型在多继承方面的体现 */
+        Object object = new Object();
+        String str = new String("123");
+        // 子类对象可以赋给父类的引用
+        object = str;
+
+        List<Object> list1 = null;
+        List<String> list2 = null;
+        // 此时list1和list2的类型并不具有父子关系， 只是并列关系
+        // list1 = list2;  错误示例
+
     }
 }
 
@@ -123,3 +127,28 @@ class GenericityClass<T> {
 //        System.out.println("static method...");
 //    }
 }
+
+/*
+ * 其他情况：
+ *      如果子类继承了父类， 父类中指定了泛型， 可以根据实际情况决定是否需要使用泛型（子类可以全部保留、部分保留、自己增加泛型）
+ *      泛型类型不同的引用不能相互赋值， 例如 ArrayList<String>和ArrayList<Integer>的引用就不能相互赋值
+ */
+
+class AAA<E> {
+}
+
+class BBB extends AAA {
+}
+
+// 父类指定的泛型不确定时， 子类继承时还可以指定父类的泛型为一个具体的类型, 这时子类的泛型就被确认了
+class CCC extends AAA<Integer> {
+}
+
+class DDD<Integer> extends AAA {
+}
+
+class EEE<E> extends AAA<E> {
+}
+
+// class FFF<E> extends AAA<Integeer>{}    错误示例
+// class GGG<Integer> extends AAA<E>{}     错误示例
