@@ -56,6 +56,8 @@ public class IODemo {
         reader();
         // 写入操作
         write();
+        // 读取和写入（复制文件）
+        copy();
     }
 
     private static void reader() {
@@ -189,6 +191,45 @@ public class IODemo {
                 try {
                     // 4：流资源的关闭
                     fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void copy() {
+        // 1：创建File类的对象， 指明读取和写入的文件
+        File srcFile = new File("D:\\11.txt");
+        File descFile = new File("D:\\3.txt");
+        // 2：创建输入流和输出流
+        FileReader fileReader = null;
+        FileWriter fileWriter = null;
+        try {
+            fileReader = new FileReader(srcFile);
+            fileWriter = new FileWriter(descFile);
+
+            // 3：数据的读入和写出操作
+            char[] chars = new char[5];
+            int len;    // 记录每次读取到数据中的字符个数
+            while ((len = fileReader.read(chars)) != -1) {
+                /* 写出数据， 每次写入数组的指定索引范围的数据（防止最后一次写入异常） */
+                fileWriter.write(chars, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 4：关闭流资源
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
