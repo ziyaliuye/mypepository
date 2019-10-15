@@ -42,7 +42,7 @@ public class IODemo {
     /*
      *  IO涉及40多个类， 都是从4个抽象基类派生出来的：
      *   输入流：InputStream（字节流）/ Reader（字符流）
-     *   输出刘：OutputStream（字节流）/ Write（字符流）
+     *   输出流：OutputStream（字节流）/ Write（字符流）
      *  派生的子类可以根据名称的"后半段"来区分是字节流（InputStream/OutputStream）还是字符流（Reader/Write）
      *
      *  抽象基类            节点流（或文件流）       缓冲流（处理流的一种）
@@ -52,12 +52,15 @@ public class IODemo {
      *  Writer          FileWriter              BufferedWriter
      */
     public static void main(String[] args) {
-        // 读取操作
-        reader();
-        // 写入操作
-        write();
-        // 读取和写入（复制文件）
-        copy();
+        /* 字符流只能处理文本形式的文件， 不能处理图片、视频等文件 */
+        // 文本文件读取操作
+        //reader();
+        // 文本文件写入操作
+        //write();
+        // 文本文件读取和写入（复制文件）
+        //copy();
+        /* 字节流可以处理任何形式的文件, 但是处理字符文件会很麻烦， 一个中文需要几个字节来存储 */
+        copyFile();
     }
 
     private static void reader() {
@@ -230,6 +233,52 @@ public class IODemo {
             if (fileReader != null) {
                 try {
                     fileReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // 实现对图片等文件的复制
+    public static void copyFile() {
+        // 1：创建File对象
+        File srcFile = new File("D:\\1.jpg");
+        File destFile = new File("D:\\2.jpg");
+
+        FileInputStream fileInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            // 2：创建流对象
+            fileInputStream = new FileInputStream(srcFile);
+            fileOutputStream = new FileOutputStream(destFile);
+            // 3：读取数据操作
+            // 创建一个字节数组， 用于存储读取的字节
+            byte[] bytes = new byte[1024];
+            // 每次读取字节的长度
+            int len;
+            while ((len = fileInputStream.read(bytes)) != -1) {
+                // 将数据写入文件
+                fileOutputStream.write(bytes, 0, len);
+            }
+            System.out.println("文件复制成功....");
+        } catch (FileNotFoundException e) {
+            System.out.println("系统找不到指定文件...");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 4：关闭资源
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
