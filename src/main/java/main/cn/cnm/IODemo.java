@@ -24,6 +24,7 @@ ___`. .' /--.--\ `. . __
 */
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author lele
@@ -53,14 +54,19 @@ public class IODemo {
      */
     public static void main(String[] args) {
         /* 字符流只能处理文本形式的文件， 不能处理图片、视频等文件 */
-        // 文本文件读取操作
-        //reader();
-        // 文本文件写入操作
-        //write();
-        // 文本文件读取和写入（复制文件）
-        //copy();
-        /* 字节流可以复制任何形式的文件, 但是如果涉及处理字符文件会比较麻烦， 一个中文需要几个字节来存储 */
-        copyFile();
+//        // 文本文件读取操作
+//        reader();
+//        // 文本文件写入操作
+//        write();
+//        // 文本文件读取和写入（复制文件）
+//        copy();
+//        /* 字节流可以复制任何形式的文件, 但是如果涉及处理字符文件会比较麻烦， 一个中文需要几个字节来存储 */
+//        copyFile();
+//        // 带缓冲区的实现对图片等文件的复制
+//        bufferCopyFile();
+//        // 带缓冲区的文本文件的复制
+//        bufferCopy();
+        changeStream();
     }
 
     private static void reader() {
@@ -201,7 +207,7 @@ public class IODemo {
         }
     }
 
-    public static void copy() {
+    private static void copy() {
         // 1：创建File类的对象， 指明读取和写入的文件
         File srcFile = new File("D:\\11.txt");
         File descFile = new File("D:\\3.txt");
@@ -241,7 +247,7 @@ public class IODemo {
     }
 
     // 实现对图片等文件的复制
-    public static void copyFile() {
+    private static void copyFile() {
         // 1：创建File对象
         File srcFile = new File("D:\\1.jpg");
         File destFile = new File("D:\\2.jpg");
@@ -279,6 +285,167 @@ public class IODemo {
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    //
+    /*
+     * 带缓冲区的实现对图片等文件的复制， 写法都差不多， 一个“处理流”套接在已有的“节点流”上， 然后使用"处理流"做操作
+     * BufferedInputStream、BufferedOutputStream 分别用于包裹 FileInputStream、FileOutputStream
+     * BufferedReader、BufferedWriter 分别用于包括 Reader、Writer
+     */
+    private static void bufferCopyFile() {
+        // 1：创建File对象
+        File srcFile = new File("D:\\1.jpg");
+        File destFile = new File("D:\\2.jpg");
+
+        FileInputStream fileInputStream;
+        FileOutputStream fileOutputStream;
+        BufferedInputStream bufferedInputStream;
+        BufferedOutputStream bufferedOutputStream = null;
+        try {
+            // 2：创建流对象
+            fileInputStream = new FileInputStream(srcFile);
+            fileOutputStream = new FileOutputStream(destFile);
+            /*
+             *  处理流：不直接连接数据源/目的地， 而是“连接”在已存在的流（节点流或处理流）之上， 通过对数据的处理为程序提供更为强大的读写功能
+             *  缓冲流是处理流的一种
+             */
+            // 创建缓冲输入/输出字节流， 包裹“处理流”对象
+            bufferedInputStream = new BufferedInputStream(fileInputStream);
+            bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+            // 3：读取数据操作
+            // 创建一个字节数组， 用于存储读取的字节
+            byte[] bytes = new byte[1024];
+            // 每次读取字节的长度
+            int len;
+            /* 使用带缓冲区的流进入读取和写入操作，只是在处理流的基础上做了加工， 实际底层还是用处理流做操作 */
+            while ((len = bufferedInputStream.read(bytes)) != -1) {
+                // 将数据写入文件
+                bufferedOutputStream.write(bytes, 0, len);
+                /* 手动刷新缓冲区， 一般不需要手动刷新 */
+                bufferedOutputStream.flush();
+            }
+            System.out.println("文件复制成功....");
+        } catch (FileNotFoundException e) {
+            System.out.println("系统找不到指定文件...");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            /* 4：关闭顺序：先关闭外层的流（处理流）， 再关闭内层的流（节点流）,但是外层的流在关闭是会自动关闭内层的流， 所以可以省略 */
+            if (bufferedOutputStream != null) {
+                try {
+                    bufferedOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bufferedOutputStream != null) {
+                try {
+                    bufferedOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /* 带缓冲区的文本文件读取和写入， 简写版 */
+    private static void bufferCopy() {
+        BufferedReader bufferedReader = null;
+        BufferedWriter bufferedWriter = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(new File("D:\\1.txt")));
+            bufferedWriter = new BufferedWriter(new FileWriter(new File("D:\\2.txt")));
+            /* 方式一： */
+//            char[] chars = new char[1024];
+//            int len;
+//            while ((len = bufferedReader.read(chars)) != -1) {
+//                bufferedWriter.write(chars, 0, len);
+//                /* 手动刷新缓冲区， 一般情况下不需要手动刷新 */
+//                bufferedWriter.flush();
+//            }
+            /* 方式二， 使用BufferedReader独有的readLind()方法每次读取一行文本， 直到返回null为止 */
+            String data;
+            while ((data = bufferedReader.readLine()) != null) {
+                /* readLine()方法只是每次读取一行， 但是不会读取换行符 */
+                bufferedWriter.write(data);
+                // 创建一个空白的行， 相当于换行符, 反正最后文本会多一个换行符
+                bufferedWriter.newLine();
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("系统找不到指定文件....");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            /* 4：关闭顺序：先关闭外层的流（处理流）， 再关闭内层的流（节点流）,但是外层的流在关闭是会自动关闭内层的流， 所以可以省略 */
+            if (bufferedWriter != null) {
+                try {
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /*
+     * 转换流：是处理流的一种， 有InputSreamReader和OutputSreamWriter两种（属于字符流）
+     * InputStreamReader：将输入的字节流变成字符流
+     * OutputStreamWriter：将输出的字符流变成字节流,字符流的输入对象变成字节流输入对象
+     * 解码：字节、字节数组 =》字符数组、字符串（字节输入=》字符输入）
+     * 编码：字符数组、字符串 =》字节、字节数组（字符输出=》字节输出）
+     */
+    private static void changeStream() {
+        FileInputStream fileInputStream;
+        FileOutputStream fileOutputStream;
+        InputStreamReader inputStreamReader = null;
+        OutputStreamWriter outputStreamWriter = null;
+        try {
+            /* FileInputStream构造器可以直接传文件路径， 省略new File */
+            fileInputStream = new FileInputStream("D:\\1.txt");
+            fileOutputStream = new FileOutputStream("D:\\2.txt");
+            // 创建一个字节流转字符流对象, 包裹字节输入流， 第二个参数不写默认按系统编码格式走
+            // 具体使用哪个字符集， 取决于文本文件本身的编码格式
+            inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
+            outputStreamWriter = new OutputStreamWriter(fileOutputStream, "GBK");
+            char[] chars = new char[20];
+            int len;
+            while ((len = inputStreamReader.read(chars)) != -1) {
+                String str = new String(chars, 0, len);
+                System.out.println(str);
+                /* 写入到文件中 */
+                outputStreamWriter.write(str);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("系统找不到指定文件....");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            /* 关闭处理流会自动关闭它所包裹的字节流 */
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStreamWriter != null) {
+                try {
+                    outputStreamWriter.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
