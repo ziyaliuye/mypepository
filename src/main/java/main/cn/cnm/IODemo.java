@@ -23,10 +23,7 @@ ___`. .' /--.--\ `. . __
 佛曰：bug泛滥，我已瘫痪！
 */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @author lele
@@ -55,6 +52,13 @@ public class IODemo {
      *  Writer          FileWriter              BufferedWriter
      */
     public static void main(String[] args) {
+        // 读取操作
+        reader();
+        // 写入操作
+        write();
+    }
+
+    private static void reader() {
         /* 读取示例一 */
         // File类初始化， 指定好对应的文件
         File file = new File("D:\\11.txt");
@@ -150,6 +154,41 @@ public class IODemo {
                 try {
                     // 4：资源关闭
                     fileReader1.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static void write() {
+        /* 写入示例一 */
+        // 1：定义File类， 这时的File类表示写出到的文件
+        File file = new File("D:\\2.txt");
+        FileWriter fileWriter = null;
+        // 2：提供FileWriter对象， 用于数据的写出
+        // 无参构造器：当File对应的文件存在时则覆盖， 当File对应的文件不存在则创建
+        // 有参构造器：第二个参数为boolean类型， false表示替换已存在文件， true表示追加到现有文件的末尾
+        try {
+            fileWriter = new FileWriter(file, true);
+        } catch (IOException e) {
+            System.out.println("系统定义写出文件出错...");
+            e.printStackTrace();
+        }
+        // 3：写出的具体操作
+        try {
+            assert fileWriter != null;
+            fileWriter.write("you are sb....\n");
+            fileWriter.write("you are sb....\n");
+            fileWriter.write("you are big sb....\n");
+        } catch (IOException e) {
+            System.out.println("写入失败");
+            e.printStackTrace();
+        } finally {
+            if (fileWriter != null) {
+                try {
+                    // 4：流资源的关闭
+                    fileWriter.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
