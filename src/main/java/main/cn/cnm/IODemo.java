@@ -404,8 +404,8 @@ public class IODemo {
 
     /*
      * 转换流：是处理流的一种， 有InputSreamReader和OutputSreamWriter两种（属于字符流）
-     * InputStreamReader：将输入的字节流变成字符流
-     * OutputStreamWriter：将输出的字符流变成字节流,字符流的输入对象变成字节流输入对象
+     * InputStreamReader：将输入的字节流变成字符流（解码）
+     * OutputStreamWriter：将输出的字符流变成字节流,字符流的输入对象变成字节流输入对象（编码）
      * 解码：字节、字节数组 =》字符数组、字符串（字节输入=》字符输入）
      * 编码：字符数组、字符串 =》字节、字节数组（字符输出=》字节输出）
      */
