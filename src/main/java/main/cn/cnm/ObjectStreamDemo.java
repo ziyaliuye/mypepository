@@ -33,7 +33,7 @@ import java.io.*;
  * 用于存储和读取基本数据类型数据或对象的处理流。它的强大之处就是可以把Java中的对象写入到数据源中，也能把对象从数据源中还原回来。
  * 序列化： 用ObjectOutputStream类保存基本类型数据或对象的机制
  * 反序列化： 用ObjectInputStream类读取基本类型数据或对象的机制
- * ObjectOutputStream和ObjectInputStream不能序列化static和transient修饰的成员变量
+ * ObjectOutputStream和ObjectInputStream不能序列化static和transient修饰的成员变量(修饰的变量会变成null)
  * <p>
  * 如果需要让某个对象支持序列化机制，则必须让对象所属的类及其属性是可序列化的，为了让某个类是可序列化的
  * 否则，会抛出 NotSerializableException 异常
@@ -91,7 +91,10 @@ public class ObjectStreamDemo {
 @Data
 class PersonTest implements Serializable {
     /*
-     * 对象想进行传输必须实现Serializable接口, 并且定义一个名字serialVersionUID的常量：
+     * 对象想进行传输必须实现Serializable接口, 以及类的属性需要支持序列化:
+     * 	    String 是内部已经实现Serializable接口的， 基本数据类型默认支持可序列化
+     *      但是要注意属性中有自定义的类， 那么这个类也必须是可序列化的
+     * 并且定义一个名字serialVersionUID的常量：
      * private/public static final long serialVersionUID
      *
      * serialVersionUID 用来表明类的不同版本间的兼容性（即使类被修改了， 依然可以还原回来）：
