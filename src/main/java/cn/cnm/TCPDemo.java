@@ -36,14 +36,18 @@ public class TCPDemo {
          *  发送数据结束时无需释放资源，开销小，速度快
          */
         // 客户端发送消息
-        new Thread(){
-            @Override
-            public void run() {
-                TCPDemo tcpDemo = new TCPDemo();
-                tcpDemo.client();
+        new Thread(() -> {
+            try {
+                // 先休眠1秒， 确保服务端已经启动
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }.start();
+            TCPDemo tcpDemo = new TCPDemo();
+            tcpDemo.client();
+        }).start();
         // 服务端接受消息
+
         server();
     }
 
