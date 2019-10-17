@@ -57,6 +57,8 @@ public class TCPDemo {
         InetAddress inetAddress;
         Socket socket = null;
         OutputStream outputStream = null;
+        InputStream inputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = null;
         try {
             inetAddress = InetAddress.getByName("127.0.0.1");
             // 初始化一个Socket实例, 有多个构造器， 这里用的是域名和端口的构造器
@@ -65,7 +67,27 @@ public class TCPDemo {
             outputStream = socket.getOutputStream();
             // 开始输出字节（另一端需要解码才能看到真实的内容）
             outputStream.write("hello ".getBytes());
+            /*
+             * Socket的流write()和read()都是阻塞式方法：
+             *  例如执行了write()或read()， 代码仍然会继续往下执行， 但是到了下一次执行write()或read()方法的时候就会阻塞（不管是不是同一个对象调用的）
+             *  所以需要在第二个write()或read()之间手工调用Socket的shutdownOutput()或shutdownInput()方法取消阻塞状态
+             *      注意是调用两次以上同名方法才会阻塞，例如调用了一次write()方法， 之后又调用了一次write()方法， 这时候就会阻塞
+             *          调用一次read()方法再调用write()方法并不会造成阻塞， 直到调用下一次read()方法时候才会阻塞
+             */
+            // socket.shutdownOutput();
             System.out.println("客户端发送一条消息：hello");
+
+            // 接收服务端的反馈
+            inputStream = socket.getInputStream();
+            // 为了防止乱码， 最好还是不用ByteArrayOutputStream处理流进行处理（当接收的内容超过数组长度会自动扩容）
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] bytes = new byte[1024];
+            int len;
+            /* read()是一个阻塞式的方法， 在没有接收到明确结束指令以前会一直阻塞， 不会往下执行 */
+            while ((len = inputStream.read(bytes)) != -1) {
+                byteArrayOutputStream.write(bytes, 0, len);
+            }
+            System.out.println(byteArrayOutputStream.toString());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -84,6 +106,20 @@ public class TCPDemo {
                     e.printStackTrace();
                 }
             }
+            if (byteArrayOutputStream != null) {
+                try {
+                    byteArrayOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -96,7 +132,7 @@ public class TCPDemo {
         try {
             // 初始化一个ServerSocket实例, 有多个构造器， 这里只需要端口号用于接收客户端发送的消息
             serverSocket = new ServerSocket(8088);
-            // 将接收到的内容封装到一个Socket对象中
+            // 获取客户端的Socket实例
             socket = serverSocket.accept();
             // 通过Socket对象获取输入流
             inputStream = socket.getInputStream();
@@ -110,6 +146,9 @@ public class TCPDemo {
                 // 调用ByteArrayOutputStream的toString()方法将字节转换为字符
                 System.out.println("获取来自IP" + socket.getInetAddress() + "的消息:" + byteArrayOutputStream.toString());
             }
+            // 服务端给客户端反馈
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write("已收到消息...".getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
