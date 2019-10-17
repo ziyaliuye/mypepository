@@ -94,7 +94,7 @@ class PersonTest implements Serializable {
      * 对象想进行传输必须实现Serializable接口, 以及类的属性需要支持序列化:
      * 	    String 是内部已经实现Serializable接口的， 基本数据类型默认支持可序列化
      *      但是要注意属性中有自定义的类， 那么这个类也必须是可序列化的
-     * 并且定义一个名字serialVersionUID的常量：
+     * 并且定义一个名字serialVersionUID（序列常量）的常量：
      * private/public static final long serialVersionUID
      *
      * serialVersionUID 用来表明类的不同版本间的兼容性（即使类被修改了， 依然可以还原回来）：
