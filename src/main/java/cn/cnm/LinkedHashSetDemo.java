@@ -17,10 +17,10 @@ import java.util.LinkedHashSet;
 public class LinkedHashSetDemo {
     public static void main(String[] args) {
         // 使用方式和方法和 HashSet 没有区别， 底层通过用是一个HashMap对象
-        LinkedHashSet linkedHashSet = new LinkedHashSet();
-        linkedHashSet.add("1");
-        linkedHashSet.add("1");
-        linkedHashSet.add(123);
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.add("A");
+        linkedHashSet.add("C");
+        linkedHashSet.add("B");
         System.out.println(linkedHashSet);
     }
 }

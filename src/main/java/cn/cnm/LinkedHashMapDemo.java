@@ -12,10 +12,10 @@ import java.util.LinkedHashMap;
  */
 public class LinkedHashMapDemo {
     public static void main(String[] args) {
-        LinkedHashMap linkedHashMap = new LinkedHashMap();
-        linkedHashMap.put(123, "AA");
-        linkedHashMap.put(234, "BB");
-        linkedHashMap.put(012, "CC");
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("AA", 123);
+        linkedHashMap.put("CC", 123);
+        linkedHashMap.put("BB", 123);
         System.out.println(linkedHashMap);
     }
 }
