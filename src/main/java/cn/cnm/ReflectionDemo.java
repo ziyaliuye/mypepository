@@ -51,7 +51,7 @@ public class ReflectionDemo {
      *  封装性更多的是告诉他人， 私有的结构不建议调用，单例模式情况下只能有一个实例存在
      *  而反射机制是能不能拿到私有属性和创建对象实例的问题， 它能直接读取私有的结构和创建实例， 但不建议这么做
      */
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         /*
          * java.lang.Class  称为反射的源头， 反射的操作第一步都是通过创建它来实现
          * 关于java.lang.Class类的理解（在Java中万物皆对象）：
@@ -93,5 +93,16 @@ public class ReflectionDemo {
          *（6） primitive type：基本数据类型
          *（7） void
          */
+        // 通过反射创建运行时类的对象（不再是通过关键字new）
+        Class clazz = PersonTest.class;
+
+        /*
+         * newInstance() 表示调用类的无参构造器, 返回”运行时类“对应类的一个实例, 也可以调用带参数构造器（通常都是调用无参构造器）
+         * 而且构造器的权限必须够，通常设置为public或缺省， 在 JavaBean 中要求提供一个 public 的无参构造器，原因：
+         *  便于通过反射，创建运行时类的实例
+         *  便于子类继承次运行类时，默认调用 super() ，保证父类中有此构造器，不然会创建实例失败
+         */
+        Object object = clazz.newInstance();
+        System.out.println(object);
     }
 }
