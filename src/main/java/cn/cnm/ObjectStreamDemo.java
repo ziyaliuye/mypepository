@@ -111,4 +111,8 @@ class PersonTest implements Serializable {
         this.name = name;
         this.age = age;
     }
+
+    public void test(String name, int age) {
+        System.out.println(name + age);
+    }
 }
