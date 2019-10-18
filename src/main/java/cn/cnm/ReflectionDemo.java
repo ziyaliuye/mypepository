@@ -51,7 +51,7 @@ public class ReflectionDemo {
      *  封装性更多的是告诉他人， 私有的结构不建议调用，单例模式情况下只能有一个实例存在
      *  而反射机制是能不能拿到私有属性和创建对象实例的问题， 它能直接读取私有的结构和创建实例， 但不建议这么做
      */
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException {
+    public static void main(String[] args) throws ClassNotFoundException {
         /*
          * java.lang.Class  称为反射的源头， 反射的操作第一步都是通过创建它来实现
          * 关于java.lang.Class类的理解（在Java中万物皆对象）：
@@ -82,7 +82,6 @@ public class ReflectionDemo {
         System.out.println(clazz1 == clazz2);
         System.out.println(clazz2 == clazz3);
         System.out.println(clazz3 == clazz4);
-        System.out.println(clazz2.getConstructor(String.class, int.class));
 
         /*
          * 以下类型均可以有Class对象：
