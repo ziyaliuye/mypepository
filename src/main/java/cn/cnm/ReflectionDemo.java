@@ -62,7 +62,6 @@ public class ReflectionDemo {
          *          例如Person.class文件加载进行内存后， 它就充当Person类的一个实例
          *          由于语法限制不能直接使用Person（直接写Person只是表示一个类型）来表示它， 所以给”运行时类“增加了一个属性class, 这个属性就表示这个“运行时类”（Person.class）
          *  java.lang.Class类的一个实例就对应着一个“运行时类”
-         *   java.lang.Class类的一个实例对应加载进内存的结构， 接口、基本数据类型、数组等等都属于这个范畴
          */
 
         // 获取Class的实例方式一：调用运行时类的属性 .class  (编译时就写死了代码， 不常用， 反射是运行时获取)
@@ -84,5 +83,16 @@ public class ReflectionDemo {
         System.out.println(clazz2 == clazz3);
         System.out.println(clazz3 == clazz4);
         System.out.println(clazz2.getConstructor(String.class, int.class));
+
+        /*
+         * 以下类型均可以有Class对象：
+         *（1） class：外部类， 成员(成员内部类， 静态内部类)， 局部内部类， 匿名内部类
+         *（2） interface： 接口
+         *（3） []：数组
+         *（4） enum：枚举
+         *（5） annotation：注解@interface
+         *（6） primitive type：基本数据类型
+         *（7） void
+         */
     }
 }
