@@ -105,7 +105,7 @@ class MyInvocationHandler implements InvocationHandler {
         HumanUitl humanUitl = new HumanUitl();
 
         humanUitl.before();
-        /* 调用方法：调用者实际为“被代理对象”， 具体调用哪个“调用助手”会做处理 */
+        /* 调用方法：调用者实际为“被代理对象”， 具体调用哪个方法和传递参数“调用助手”会做处理 */
         Object returnValue = method.invoke(obj, args);
         humanUitl.after();
 
@@ -116,12 +116,12 @@ class MyInvocationHandler implements InvocationHandler {
 /* 模拟Spring中的AOP:第一步 */
 class HumanUitl {
     // 调用“被代理类”方法之前调用的方法
-    public void before() {
+    void before() {
         System.out.println("摆好Poss...");
     }
 
     // 调用“被代理类”方法之之后调用的方法
-    public void after() {
+    void after() {
         System.out.println("拍拍肚子...");
     }
 }
