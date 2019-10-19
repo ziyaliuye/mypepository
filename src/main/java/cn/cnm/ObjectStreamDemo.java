@@ -104,6 +104,8 @@ class PersonTest implements Serializable {
      */
     public static final long serialVersionUID = 12345678L;
 
+    public static String sex = "男";
+
     private String name;
     private int age;
 
@@ -119,5 +121,10 @@ class PersonTest implements Serializable {
 
     public void test(String name, int age) {
         System.out.println(name + age);
+    }
+
+    private static String staticTest() {
+        System.out.println("静态方法被调用....");
+        return "傻逼";
     }
 }

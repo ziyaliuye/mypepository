@@ -54,7 +54,7 @@ public class ReflectionDemo {
      *  封装性更多的是告诉他人， 私有的结构不建议调用，单例模式情况下只能有一个实例存在
      *  而反射机制是能不能拿到私有属性和创建对象实例的问题， 它能直接读取私有的结构和创建实例， 但不建议这么做
      */
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
         /*
          * java.lang.Class  称为反射的源头， 反射的操作第一步都是通过创建它来实现
          * 关于java.lang.Class类的理解（在Java中万物皆对象）：
@@ -97,7 +97,7 @@ public class ReflectionDemo {
          *（7） void
          */
         // 通过反射创建运行时类的对象（不再是通过关键字new）
-        Class clazz = PersonTest.class;
+        Class<PersonTest> clazz = PersonTest.class;
 
         /*
          * newInstance() 表示调用类的无参构造器, 返回”运行时类“对应类的一个实例, 也可以调用带参数构造器（通常都是调用无参构造器）
@@ -235,5 +235,49 @@ public class ReflectionDemo {
          */
         Package aPackagee = clazz.getPackage();
         System.out.println("当前运行时类的包路径：" + aPackagee);
+
+        /*
+         * 反射操作示例
+         */
+        /* 获取“运行时类”指定的属性 */
+        Field name = clazz.getDeclaredField("name");
+        /* 不能直接操作非public修饰的属性， 否则会提示权限不够异常， 需要设置属性为无障碍模式 */
+        name.setAccessible(true);
+
+        // 参数一：指明设置哪个对象的属性 参数二：将此属性值设置为多少
+        name.set(object, "二傻蛋");
+        /* 注意参数如果是静态的， 那么它就不属于具体的哪个对象了， 第一个参数可以写成null或者“运行时类” */
+        Field sex = clazz.getDeclaredField("sex");
+        // 还需要注意静态属性不能修饰final， 这是常识
+        sex.set(null, "女");
+        // 等价于：
+        // sex.set(PersonTest.class, "女");
+
+        // 获取属性的值, 参数指定是哪个实例
+        System.out.println("object属性name：" + name.get(object));
+        // 获取静态属性的值， 参数同样可以写null或者“运行时类”
+        System.out.println("object静态属性serialVersionUID：" + sex.get(PersonTest.class));
+
+        /* 获取“运行时类”指定的方法, 第一个参数是方法名， 后面的参数则是方法的参数类型 */
+        Method test = clazz.getDeclaredMethod("test", String.class, int.class);
+        Method staticTest = clazz.getDeclaredMethod("staticTest");
+        // 如果方法不是public修饰的， 则需要设置无障碍操作
+        test.setAccessible(true);
+        /* invoke()的方法值就是调用对应方法的返回值 */
+        // 调用invoke()开始调用指定实例的方法， 参数以：方法的调用者， 后续参数则是方法的实参
+        test.invoke(object, "王二蛋", 123);
+        /* 同样的， 静态方法的调用者可以写null或"运行时类" */
+        staticTest.setAccessible(true);
+        String result = staticTest.invoke(PersonTest.class).toString();
+        System.out.println("静态方法的返回值：" + result);
+
+        /* 获取“运行时类”指定的构造器, 参数则是构造器的参数类型 */
+        Constructor constructor = clazz.getDeclaredConstructor(String.class, int.class);
+        // 设置无障碍访问
+        constructor.setAccessible(true);
+        // 调用构造器获取一个实例
+        PersonTest personTest = (PersonTest) constructor.newInstance("康大傻子", 28);
+        System.out.println(personTest);
+        /* 这种方式很繁琐， 可以调用“运行时类”的newInstance()方法即可， 指定有这么回事就可以 */
     }
 }
