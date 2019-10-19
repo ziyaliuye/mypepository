@@ -32,6 +32,9 @@ package cn.cnm;
              ................好烦啦.....................
 */
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+
 /**
  * @author lele
  * @version 1.0
@@ -104,5 +107,133 @@ public class ReflectionDemo {
          */
         Object object = clazz.newInstance();
         System.out.println(object);
+
+        /*
+         * 通过反射获取“运行时类”的属性（注意有的方法只能获取public修饰的结构， 缺省类型也不能获取）
+         */
+        // 通过getFields()获取类的public修饰的属性结构， 返回一个Field数组
+        // 数组总包含了类中所有（包括同父类继承而来的属性）public的属性结构
+        Field[] fields = clazz.getFields();
+        for (Field f : fields) {
+            System.out.println("getFields()：" + f.getName());
+        }
+        // 通过getDeclaredFields()获取当前类所有（不考虑修饰权限）声明过的属性结构（不包含父类）， 返回一个Field数组
+        Field[] declaredFiles = clazz.getDeclaredFields();
+        for (Field f : declaredFiles) {
+            System.out.println("getDeclaredFields()：" + f.getName());
+        }
+        // 通过Field类的实例获取：权限修饰符、数据类型、变量名
+        for (Field f : declaredFiles) {
+            /* 权限修饰符定义的只是一个数值， 需要调用Modifier的toString()方法返回具体的含义 */
+            System.out.print("权限修饰符：" + Modifier.toString(f.getModifiers()) + "  ");
+            /* 数据类型对应的就是一个Class类的实例， 可以用Class接收 */
+            System.out.print("数据类型：" + f.getType() + "  ");
+            System.out.print("变量名：" + f.getName() + "  \n");
+        }
+
+        /*
+         * 通过反射获取“运行时类”的方法
+         */
+        // 通过getFields()获取类的public修饰的方法结构， 返回一个Method数组
+        // 数组总包含了类中所有（包括同父类继承而来的方法）public的方法结构
+        Method[] methods = clazz.getMethods();
+        for (Method m : methods) {
+            System.out.println("getMethods()：" + m.getName());
+        }
+        // 通过getDeclaredFields()获取当前类所有（不考虑修饰权限）声明过的属性结构（不包含父类）， 返回一个Field数组
+        Method[] declaredMethods = clazz.getDeclaredMethods();
+        for (Method m : declaredMethods) {
+            System.out.println("getDeclaredMethods()：" + m.getName());
+        }
+        // 通过Method类的实例获取：
+        // @Annotation 权限修饰符、返回值类型、方法名(参数类型1 形参名1, ....) throws XxxException{}
+        /* 获取方法声明的注解（生命周期是runtimer的注解才能获取到）, 这里是获取所有注解中的第一个 */
+        for (Method m : declaredMethods) {
+            Annotation[] annotations = m.getAnnotations();
+            for (Annotation a : annotations) {
+                System.out.println("方法的注解：" + a);
+            }
+        }
+        /* 获取权限修饰符， 同样需要调用Modifier的toString()方法返回具体的含义 */
+        for (Method m : declaredMethods) {
+            System.out.println("方法的权限修饰符：" + Modifier.toString(m.getModifiers()));
+        }
+        /* 方法的返回值类型， 类型对应的就是一个Class类的实例， 可以用Class接收， 包括void */
+        for (Method m : declaredMethods) {
+            System.out.println("方法的返回值类型：" + m.getReturnType());
+        }
+        for (Method m : declaredMethods) {
+            System.out.println("方法名：" + m.getName());
+        }
+        /* 形参列表和异常类型 */
+        for (Method m : declaredMethods) {
+            // 获取参数列表
+            Class[] parameterTypes = m.getParameterTypes();
+            // 判断参数是否为空
+            for (Class p : parameterTypes) {
+                System.out.println("参数：" + p.getName());
+            }
+            // 获取异常类型
+            Class[] exceptions = m.getExceptionTypes();
+            // 判断参数是否为空
+            for (Class e : exceptions) {
+                System.out.println("抛出异常：" + e.getName());
+            }
+        }
+
+        /*
+         * 通过反射获取“运行时类”的构造器
+         */
+        // 获取当前“运行时类”中声明为public的构造器（构造器和方法、属性区别就是不能拿到父类的构造器）
+        Constructor[] constructors = clazz.getConstructors();
+        for (Constructor c : constructors) {
+            System.out.println("getConstructors()：" + c);
+        }
+        // 获取当前“运行时类”中所有声明的构造器
+        Constructor[] declaredConstructors = clazz.getDeclaredConstructors();
+        for (Constructor d : declaredConstructors) {
+            System.out.println("getDeclaredConstructors()：" + d);
+        }
+        /*
+         * 通过反射获取“运行时类”的父类
+         */
+        Class superClass = clazz.getSuperclass();
+        System.out.println("运行时类的父类：" + superClass);
+        // 获取带泛型的父类， 如果没有泛型， 则返回普通的类
+        Type type = clazz.getGenericSuperclass();
+        System.out.println("运行时类带泛型的父类：" + type);
+        // 获取父类泛型参数列表, 这里如果父类没有泛型则会强转失败 ClassCastException
+        try {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            for (Type a : actualTypeArguments) {
+                System.out.println("泛型参数：" + a.getTypeName());
+                /* 也可以将泛型类型转换为Class */
+                Class genericClass = (Class) a;
+                System.out.println("泛型参数：" + genericClass.getName());
+            }
+        } catch (ClassCastException e) {
+            System.out.println("父类没有声明泛型...");
+        }
+
+        /*
+         * 通过反射获取“运行时类”实现的接口
+         */
+        // 获取当前“运行时类”所实现的接口
+        Class[] interfaces = clazz.getInterfaces();
+        // 获取当前“运行时类”的"父类"所实现的接口
+        Class[] superInterfaces = clazz.getSuperclass().getInterfaces();
+        for (Class c : interfaces) {
+            System.out.println("interfaces：" + c);
+        }
+        for (Class s : superInterfaces) {
+            System.out.println("superInterfaces：" + s);
+        }
+
+        /*
+         * 通过反射获取“运行时类”所处的包
+         */
+        Package aPackagee = clazz.getPackage();
+        System.out.println("当前运行时类的包路径：" + aPackagee);
     }
 }
