@@ -73,8 +73,8 @@ public class ConstructorReferenceDemo {
         Function<Integer, String[]> function7 = String[]::new;
         // 创建一个长度是5的空数组
         String[] strings1 = function7.apply(5);
-
         System.out.println(Arrays.toString(strings));
+
         System.out.println(Arrays.toString(strings1));
     }
 }
