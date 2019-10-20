@@ -80,7 +80,7 @@ public class StreamAPI {
         /* 《映射》： */
         // map(Function f)：接收一个函数作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素
         System.out.println("集合的所有元素都转为大写：");
-        list1.stream().map(str -> str.toUpperCase()).forEach(System.out::println);
+        list1.stream().map(String::toUpperCase).forEach(System.out::println);
         // flatMap(Function f)：接收一个函数作为参数，将流中的每个值都换成另一个流， 然后把所有转换后的流连接成一个新的流
         /*
          * map类似于集合中的add()方法：不管怎么操作都是将每一个元素修改后组成一个新的集合
@@ -88,7 +88,8 @@ public class StreamAPI {
          * 从这点看出来越来越像scala的语法， 两个差不多多操作的方法返回的结果却是不同维度（一维二维甚至三维）的集合
          */
         System.out.println("flatMap方法将集合的所有元素都转为大写并拆成一个个的字符打印：");
-        // flatMap()方法内的返回值就是一个Stream对象， 所以定义的函数里返回值得是Stream
+        // flatMap()方法内的返回值其实是“一个集合”的Stream， 然后它可以对这个Stream再做其他遍历操作
+        // 如果是map()做同样的遍历操作（集合中的元素也是集合的情况）需要做几步操作
         list1.stream().flatMap(StreamAPI::toUpperCase).forEach(System.out::println);
         // mapToDouble(ToDoubleFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的DoubleStream
         // mapToInt(ToIntFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的IntStream
