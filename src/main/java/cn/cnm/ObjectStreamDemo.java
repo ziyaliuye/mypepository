@@ -114,6 +114,11 @@ class PersonTest implements Serializable {
         this.age = 18;
     }
 
+    PersonTest(String name) {
+        this.name = name;
+        this.age = 18;
+    }
+
     PersonTest(String name, int age) {
         this.name = name;
         this.age = age;
