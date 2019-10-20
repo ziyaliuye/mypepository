@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  * @author lele
  * @version 1.0
  * @Description 构造器引用和方法引用类似（只看构造器的参数列表， 并且也包含类似于柯里化函数）
- * 数组引用：和构造器引用没什么区别， 数组本身就是一个类
+ * 数组引用：和构造器引用没什么区别， 数组本身就是一个特殊的类
  * <p>
  * 格式：类名::new
  * @Email 414955507@qq.com
@@ -69,7 +69,7 @@ public class ConstructorReferenceDemo {
         Function<Integer, String[]> function6 = lengths -> new String[lengths];
         // 创建一个长度是5的空数组
         String[] strings = function6.apply(5);
-        /* 数组引用写法：和构造器的写法级别没区别 */
+        /* 数组引用写法：和构造器的写法级别没区别， 数组本身就是一个特殊的类 */
         Function<Integer, String[]> function7 = String[]::new;
         // 创建一个长度是5的空数组
         String[] strings1 = function7.apply(5);
