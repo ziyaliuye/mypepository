@@ -127,4 +127,8 @@ class PersonTest implements Serializable {
         System.out.println("静态方法被调用....");
         return "傻逼";
     }
+
+    public static String getDefaultName() {
+        return "二蛋子";
+    }
 }
