@@ -47,6 +47,31 @@ public class StreamAPI {
         Stream<Book> stream = list.stream();
         // parallelStream()：返回一个并行流， ， 从集合中取数据时是多线程并行取
         Stream<Book> parallelStream = list.parallelStream();
+        /* 创建方式二：通过数组（基本数据类型） */
+        // 从过Arrays工具类的静态方法stream(T[] array)可以返回一个流（基本数据类型）
+        // 需要用BaseStream的实现类根据类型来接收， 例如IntStream、DoubleStream， 引用类型使用Stream即可
+        IntStream intStream = Arrays.stream(new int[]{1, 2, 3, 6, 5, 4, 7, 8, 9});
+
+        /* 创建方式三：调用Stream类的静态方法of()返回一个流 */
+        Stream<Integer> stringStream = Stream.of(1, 2, 3, 6, 5, 4, 9, 8, 7);
+
+        /* 创建方式四：创建无限流， 前三者创建的都是有限的 */
+        /*
+         * iterate()：迭代, 遍历前10个偶数, 第二个参数就是一个函数用于将参数+2然后将结果返回
+         * 第二个参数是JDK1.8新增的UnaryOperator函数式接口， 继承自Function
+         *   用于对类型为T结果。 包含方法T的对象进行一元运算为：T apply(T t); 并返回T类型的
+         * limit() 限制无限流的长度， 不然就是变成无限迭代
+         * forEach()相当于就是“终止操作”， 调用它时才开始启动“中间链”环节, 然后用方法引用将结果打印
+         */
+        Stream.iterate(0, t -> t + 2).limit(10).forEach(System.out::println);
+        /*
+         * generate()：生成, 同样默认是无限制生成
+         * limit() 限制无限流的长度， 不然就是变成无限生成
+         * forEach()相当于就是“终止操作”， 调用它时才开始启动“中间链”环节, 然后用方法引用将结果打印
+         */
+        Stream.generate(Math::random).limit(10).forEach(System.out::println);
+
+        /* ②中间操作 */
 
         /*
          * 多个中间操作可以连接起来形成一个流水线，除非流水线上触发终止操作
@@ -91,6 +116,8 @@ public class StreamAPI {
         // mapToInt(ToIntFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的IntStream（操作流程类似于flatMap）
         // mapToLong(ToLongFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的LongStream（操作流程类似于flatMap）
 
+        /* ③终止操作（终端操作） */
+
         /* 《排序》排序的类要实现Comparable接口或者给定定制排序器Comparator， 不然会报错： */
         // sorted()：产生一个新流，其中按自然顺序排序
         System.out.println("sorted()自然排序后结果：");
@@ -98,30 +125,6 @@ public class StreamAPI {
         // sorted(Comparator com)：产生一个新流，其中按比较器顺序排序（Lambda表达式写非常简短, 注意前面加了负号， 从大到小排序）
         System.out.println("sorted()定制排序从大到小结果：");
         list1.stream().sorted((e1, e2) -> -e1.compareTo(e2)).forEach(System.out::println);
-
-        /* 创建方式二：通过数组（基本数据类型） */
-        // 从过Arrays工具类的静态方法stream(T[] array)可以返回一个流（基本数据类型）
-        // 需要用BaseStream的实现类根据类型来接收， 例如IntStream、DoubleStream， 引用类型使用Stream即可
-        IntStream intStream = Arrays.stream(new int[]{1, 2, 3, 6, 5, 4, 7, 8, 9});
-
-        /* 创建方式三：调用Stream类的静态方法of()返回一个流 */
-        Stream<Integer> stringStream = Stream.of(1, 2, 3, 6, 5, 4, 9, 8, 7);
-
-        /* 创建方式四：创建无限流， 前三者创建的都是有限的 */
-        /*
-         * iterate()：迭代, 遍历前10个偶数, 第二个参数就是一个函数用于将参数+2然后将结果返回
-         * 第二个参数是JDK1.8新增的UnaryOperator函数式接口， 继承自Function
-         *   用于对类型为T结果。 包含方法T的对象进行一元运算为：T apply(T t); 并返回T类型的
-         * limit() 限制无限流的长度， 不然就是变成无限迭代
-         * forEach()相当于就是“终止操作”， 调用它时才开始启动“中间链”环节, 然后用方法引用将结果打印
-         */
-        Stream.iterate(0, t -> t + 2).limit(10).forEach(System.out::println);
-        /*
-         * generate()：生成, 同样默认是无限制生成
-         * limit() 限制无限流的长度， 不然就是变成无限生成
-         * forEach()相当于就是“终止操作”， 调用它时才开始启动“中间链”环节, 然后用方法引用将结果打印
-         */
-        Stream.generate(Math::random).limit(10).forEach(System.out::println);
 
         /*
          * 终端操作会从流的流水线生成结果。其结果可以是任何不是流的值，例如： List、 Integer，甚至是void
