@@ -7,7 +7,10 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -50,16 +53,8 @@ public class StreamAPI {
         /*
          * 多个中间操作可以连接起来形成一个流水线，除非流水线上触发终止操作
          * 否则中间操作不会执行任何的处理！而在终止操作时一次性全部处理，称为《惰性求值》
-         *
-         *
-         *
-         *
-         *
-         *
-         * 《排序》：
-         *   sorted()：产生一个新流，其中按自然顺序排序
-         *   sorted(Comparator com)：产生一个新流，其中按比较器顺序排序
          */
+
         /* 《筛选与切片方法》： */
         // filter(Predicate p)：接收Lambda ， 从流中排除某些元素
         System.out.println("排除价格<=500的Book：");
@@ -77,6 +72,7 @@ public class StreamAPI {
         list.stream().skip(3).forEach(System.out::println);
 
         List<String> list1 = Arrays.asList("aa", "cc", "bb", "dd", "e");
+
         /* 《映射》： */
         // map(Function f)：接收一个函数作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素
         System.out.println("集合的所有元素都转为大写：");
@@ -91,10 +87,17 @@ public class StreamAPI {
         // flatMap()方法内的返回值其实是“一个集合”的Stream， 然后它可以对这个Stream再做其他遍历操作
         // 如果是map()做同样的遍历操作（集合中的元素也是集合的情况）需要做几步操作
         list1.stream().flatMap(StreamAPI::toUpperCase).forEach(System.out::println);
-        // mapToDouble(ToDoubleFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的DoubleStream
-        // mapToInt(ToIntFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的IntStream
+        // mapToDouble(ToDoubleFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的DoubleStream（操作流程类似于flatMap）
+        // mapToInt(ToIntFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的IntStream（操作流程类似于flatMap）
+        // mapToLong(ToLongFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的LongStream（操作流程类似于flatMap）
 
-        // mapToLong(ToLongFunction f)：接收一个函数作为参数，该函数会被应用到每个元素上，产生一个新的LongStream
+        /* 《排序》排序的类要实现Comparable接口或者给定定制排序器Comparator， 不然会报错： */
+        // sorted()：产生一个新流，其中按自然顺序排序
+        System.out.println("sorted()自然排序后结果：");
+        list1.stream().sorted().forEach(System.out::println);
+        // sorted(Comparator com)：产生一个新流，其中按比较器顺序排序（Lambda表达式写非常简短, 注意前面加了负号， 从大到小排序）
+        System.out.println("sorted()定制排序从大到小结果：");
+        list1.stream().sorted((e1, e2) -> -e1.compareTo(e2)).forEach(System.out::println);
 
         /* 创建方式二：通过数组（基本数据类型） */
         // 从过Arrays工具类的静态方法stream(T[] array)可以返回一个流（基本数据类型）
@@ -119,6 +122,96 @@ public class StreamAPI {
          * forEach()相当于就是“终止操作”， 调用它时才开始启动“中间链”环节, 然后用方法引用将结果打印
          */
         Stream.generate(Math::random).limit(10).forEach(System.out::println);
+
+        /*
+         * 终端操作会从流的流水线生成结果。其结果可以是任何不是流的值，例如： List、 Integer，甚至是void
+         * 流进行了终止操作后，不能再次使用
+         */
+
+        /* 《匹配与查找》：返回boolean类型结果 */
+        // allMatch(Predicate p)：检查是否匹配所有元素（价格是否大于500）
+        System.out.println("是否所有Book：" + list.stream().allMatch(e -> e.getPrice() > 500));
+        // anyMatch(Predicate p)：检查是否至少匹配一个元素
+        System.out.println("是否至少有一本Book超过5000块：" + list.stream().anyMatch(e -> e.getPrice() > 5000));
+        // noneMatch(Predicate p)：检查是否没有匹配所有元素
+        System.out.println("是否没有Book超过100000块：" + list.stream().noneMatch(e -> e.getPrice() > 100000));
+        // findFirst()：返回第一个元素
+        System.out.println("返回第一本Book：" + list.stream().findFirst());
+        /* findAny()：返回当前流中的任意元素， 如果使用“顺序流”，则会一直返回第一个元素， 如果使用“并行流”，则会返回其中某个流中的第一个元素（不好用， 经常返回的都是同一个元素） */
+        System.out.println("（有坑， 不是正常意义上随机）返回任意一本Book：" + list.parallelStream().findAny());
+        // count()：返回流中元素总数
+        System.out.println("Book总数：" + list.stream().count());
+        // max(Comparator c)：返回流中最大值， 需要给定定制排序器（先获取Book的价格， 然后根据价格给定排序规则）
+        System.out.println("Book总数：" + list.stream().map(Book::getPrice).max(Integer::compare));
+        // min(Comparator c)：返回流中最小值， 需要给定定制排序器
+        System.out.println("Book总数：" + list.stream().map(Book::getPrice).min(Integer::compare));
+        // forEach(Consumer c)："内部迭代"(使用Collection接口需要用户去做迭代，称为外部迭代, 相反，Stream API使用内部迭代——它帮你把迭代做了)
+        System.out.println("调用Stream内部迭代方法迭代遍历打印所有元素:");
+        list.stream().forEach(System.out::println);
+
+        /* 《规约》：可以理解为Stream做完映射操作后， 对产生的结果做一次处理（例如求和操作）*/
+        // map和reduce的连接通常称为map-reduce模式，因Google用它来进行网络搜索而出名
+        // reduce(T iden, BinaryOperator b)：可以将流中元素反复结合起来，得到一个值并返回 T, 例如求1-10的自然数之和
+        List<Integer> list2 = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        /* 第一个参数就是初始值的意思， 从初始值开始做某个计算， 和scala一毛一样, 会反复将前两个值相加然后得到一个结果， 再将结果往后循环加上初始值再相加 */
+        System.out.println("1-10的和：" + list2.stream().reduce(0, Integer::sum));
+        System.out.println("写法等同于：" + list2.stream().reduce((i1, i2) -> 0 + i1 + i2));
+        // reduce(BinaryOperator b)：可以将流中元素反复结合起来，得到一个值并返回Optional<T>
+        System.out.println("1-10的和：" + list2.stream().reduce(Integer::sum));
+        System.out.println("写法等同于：" + list2.stream().reduce((i1, i2) -> i1 + i2));
+
+        /*
+         * collect(Collector c) 《收集》：简而言之就是接收一个Collector的实现将Stream的结果转换为一个集合：Set、List、Map
+         * Collector 接口中方法的实现决定了如何对流执行收集的操作(如收集到 List、 Set、Map)
+         * 另外， Collectors 实用类提供了很多静态方法，可以方便地创建常见收集器实例：
+         */
+        List<Book> list3 = list.stream().filter(e -> e.getPrice() > 5000).collect(Collectors.toList());
+        System.out.println("筛选价格大于5000的Book并转为一个List：");
+        for (Book b : list3) {
+            System.out.println(b);
+        }
+        /* 其他方法示例 */
+        // toList List<T> 把流中元素收集到List
+        // List<Employee> emps= list.stream().collect(Collectors.toList());
+
+        // toSet Set<T> 把流中元素收集到Set
+        // Set<Employee> emps= list.stream().collect(Collectors.toSet());
+
+        // toCollection Collection<T> 把流中元素收集到创建的集合
+        // Collection<Employee> emps =list.stream().collect(Collectors.toCollection(ArrayList::new));
+
+        // counting Long 计算流中元素的个数
+        // long count = list.stream().collect(Collectors.counting());
+
+        // summingInt Integer 对流中元素的整数属性求和
+        // int total=list.stream().collect(Collectors.summingInt(Employee::getSalary));
+
+        // averagingInt Double 计算流中元素Integer属性的平均值
+        // double avg = list.stream().collect(Collectors.averagingInt(Employee::getSalary));
+
+        // summarizingInt IntSummaryStatistics 收集流中Integer属性的统计值。 如：平均值
+        // int SummaryStatisticsiss= list.stream().collect(Collectors.summarizingInt(Employee::getSalary));
+
+        // joining String 连接流中每个字符串
+        // String str= list.stream().map(Employee::getName).collect(Collectors.joining());
+
+        // maxBy Optional<T> 根据比较器选择最大值
+        // Optional<Emp>max= list.stream().collect(Collectors.maxBy(comparingInt(Employee::getSalary)));
+
+        // minBy Optional<T> 根据比较器选择最小值
+        // Optional<Emp> min = list.stream().collect(Collectors.minBy(comparingInt(Employee::getSalary)));
+
+        // reducing 归约产生的类型  从一个作为累加器的初始值开始，利用BinaryOperator与流中元素逐个结合，从而归约成单个值
+        // int total=list.stream().collect(Collectors.reducing(0, Employee::getSalar, Integer::sum));
+
+        // collectingAndThen 转换函数返回的类型 包裹另一个收集器，对其结果转换函数
+        // int how= list.stream().collect(Collectors.collectingAndThen(Collectors.toList(), List::size));
+
+        // groupingBy Map<K, List<T>> 根据某属性值对流分组，属性为K，结果为V
+        // Map<Emp.Status, List<Emp>> map= list.stream().collect(Collectors.groupingBy(Employee::getStatus));
+
+        // partitioningBy Map<Boolean, List<T>> 根据true或false进行分区
+        // Map<Boolean,List<Emp>> vd = list.stream().collect(Collectors.partitioningBy(Employee::getManage));
     }
 
     // 定义一个函数（方法）
